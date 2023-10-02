@@ -1,0 +1,16 @@
+---
+- block:
+  - include_tasks: {{ item }}
+    loop:
+      - rhel_based.yml
+  become: true
+  # change that
+  when: ansible_distrovar == "rhel"
+
+- block:
+  - include_tasks: {{ item }}
+    loop:
+      - ubuntu_based.yml
+  become: true
+  # change that
+  when: ansible_distrovar == "ubuntu"

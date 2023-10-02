@@ -1,0 +1,30 @@
+---
+- name: Workstation install and configuration
+  hosts: all
+
+  tasks:
+
+  - include_vars: vars.yml
+
+  - name: Manage env variables
+    include_tasks: tasks/env.yml
+
+  - block:
+    - name: Manage repositories and install programs
+      include_tasks: "{{ item }}"
+      loop:
+        - tasks/add_repos.yml
+        - tasks/install_programs.yml
+    become: true
+
+  - name: nextcloud config
+    include_tasks: tasks/nextcloud.yml
+
+  - name: vim config
+    include_tasks: tasks/vim.yml
+
+  - name: GUI and interface config
+    include_tasks: tasks/interface.yml
+
+  - name: create config files link
+    include_tasks: tasks/config_files.yml

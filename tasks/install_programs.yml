@@ -1,0 +1,36 @@
+---
+- name: Update apt package list
+  apt:
+    update-cache: true
+    cache_valid_time: 14440  # évite la répétition à chaque lancement du role
+
+- name: Update packages and dependencies
+  apt:
+    upgrade: dist
+
+- name: Install all apt packages
+  apt:
+    name: "{{ apt_packages }}"
+    state: present
+
+- name: add flatpak default remote
+  flatpak_remote:
+    name: flathub
+    state: present
+    flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+
+- name: Install flatpak packages
+  flatpak:
+    name: "{{ flatpak_packages }}"
+    state: present
+
+- name: Install pip packages
+  pip:
+    name: "{{ pip_packages }}"
+    state: present
+
+- name: Update pip to latest
+  pip:
+    name: pip
+    state: latest
+  

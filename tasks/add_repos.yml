@@ -1,0 +1,21 @@
+---
+- name: Install required packages
+  apt:
+    name: "{{ apt.req_packages }}"
+    state: present
+
+- name: Add GPG signing keys to apt
+  apt_key:
+    url: "{{ item }}"
+    state: present
+  loop: "{{ apt.signing_keys }}"
+
+- name: add apt repositories
+  apt_repository:
+    repo: "{{ item }}"
+    state: present
+  loop: "{{ apt.sources }}"
+
+- name: Update apt package list
+  apt:
+    update-cache: true

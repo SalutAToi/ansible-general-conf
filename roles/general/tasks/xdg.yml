@@ -1,0 +1,9 @@
+---
+- name: Setting xdg variables in /etc/profile.d
+  ansible.builtin.lineinfile:
+    dest: "{{ xdg_vars.profile_file }}"
+    create: true
+    line: "{{ item.line }}"
+    regexp: "{{ item.regexp }}"
+    mode: "0644"
+  loop: "{{ xdg_vars.lines }}"

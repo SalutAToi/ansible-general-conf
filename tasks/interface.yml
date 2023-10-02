@@ -1,0 +1,13 @@
+---
+- name: copy gnome config file
+  copy:
+    src: files/gnome_settings.ini
+    dest: gnome-settings.ini
+
+- name: import dconf gnome settings
+  shell: dconf load / < gnome-settings.ini
+
+- name: remove config file
+  file:
+    path: gnome-settings.ini
+    state: absent

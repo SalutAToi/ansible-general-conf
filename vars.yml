@@ -1,0 +1,122 @@
+---
+
+apt:
+  # packages required to add new repos
+  req_packages:
+    - packagekit
+    - apt-transport-https
+    - curl
+    - gnupg
+    - git
+    - wget
+    - ca-certificates
+    - lsb-release
+  signing_keys:
+    - https://packages.microsoft.com/keys/microsoft.asc
+    - https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    - https://download.docker.com/linux/ubuntu/gpg
+    - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg
+    - https://protonvpn.com/download/public_key.asc
+  sources:
+    - "deb https://packages.cloud.google.com/apt cloud-sdk main"
+    - "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ jammy main"
+    - "deb https://repo.protonvpn.com/debian stable main"
+    - "deb https://download.vscodium.com/debs vscodium main"
+    - "deb [arch=amd64] https://download.docker.com/linux/ubuntu jammy stable"
+
+apt_packages:
+  - gnome-shell-extension-appindicator
+  - alacritty
+  - android-sdk-platform-tools
+  - audacity
+  - bind9-dnsutils
+  - calibre
+  - codium
+  - containerd.io
+  - diffutils
+  - docker-ce
+  - docker-ce-cli
+  - docker-compose
+  - firefox
+  - flatpak
+  - fzf
+  - gimp
+  - gnupg-agent
+  - hashcat
+  - hashcat-data
+  - keepassxc
+  - jq
+  - netcat
+  - neovim
+  - nmap
+  - onedrive
+  - openjdk-11-jre
+  - openssh-client
+  - openssh-server
+  - pavucontrol
+  - protonvpn
+  - python3-pip
+  - libvirt0
+  - qemu-kvm
+  - rename
+  - remmina
+  - scrcpy
+  - strongswan
+  - strongswan-charon
+  - strongswan-nm
+  - taskwarrior
+  - transmission
+  - vagrant
+  - vagrant-libvirt
+  - vlc
+  - fonts-powerline
+  - wireshark
+  - xdg-user-dirs
+  - yubikey-manager
+  - zsh
+  - zsh-autosuggestions
+  - google-cloud-cli
+  - azure-cli
+  - onedrive
+  - nextcloud-desktop
+  - taskwarrior
+
+
+flatpak_packages:
+  - org.chromium.Chromium
+  - org.signal.Signal
+  - com.github.micahflee.torbrowser-launcher
+
+pip_packages:
+  - anisble
+  - youtube-dl
+  - speedtest-cli
+  - ansible
+  - ansible-vault
+  - ansible-lint
+
+home: /home/christophe
+
+conf_files:
+  vim: "{{ home }}/Nextcloud/.config/conf_vim"
+  zsh: "{{ home }}/Nextcloud/.config/conf_zsh"
+  ssh: "{{ home }}/Nextcloud/.config/conf_ssh"
+
+nvim_config:
+  plugin_dir: "{{ home }}/.local/share/nvim/plugins"
+  plugin_file: "{{ home }}/.local/share/nvim/site/autoload/plug.vim"
+  config_file: "{{ home }}/.config/nvim/init.vim"
+
+nextcloud_config:
+  config_filename: nextcloud.cfg
+  config_dir: "{{ home }}/.config/Nextcloud/"
+
+xdg:
+  profile_file: /etc/profile.d/xdg_dirs_desktop_session.sh
+  lines:
+    - line: "export XDG_CONFIG_HOME=\"$HOME/.config\""
+      regexp: "export XDG_CONFIG_HOME="
+    - line: "export XDG_DATA_HOME=\"$HOME/.local/share\""
+      regexp: "export XDG_DATA_HOME="
+    - line: "export XDG_CACHE_HOME=\"$HOME/.cache\""
+      regexp: "export XDG_CACHE_HOME="

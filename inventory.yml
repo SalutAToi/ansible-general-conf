@@ -1,0 +1,17 @@
+---
+all:
+  hosts:
+    malatesta:
+      ansible_hostname: 192.168.0.1
+      ansible_username: christophe
+      ansible_password: "{{ workstation_main_user_pwd }}"
+  children:
+    fedora:
+      children:
+        sway:
+          hosts:
+            malatesta:
+  # popos:
+    #   gnome:
+    #     hosts:
+    #       malatesta:
