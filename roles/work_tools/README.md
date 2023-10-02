@@ -8,6 +8,7 @@
 - install terraform (from hashicorp)
 https://developer.hashicorp.com/terraform/tutorials/gcp-get-started/install-cli
 - add vscode profiles from exported files
+- add gpg signing to git config
 ## ansible
 pour ansible, mettre  dans le ansible.cfg, pour changer l'affichage des retours en yaml
 [default]

@@ -9,6 +9,7 @@
 - import dotfiles (do first !)
   - set config for local config repo (dotfiles) to status.showUntrackedFiles no
 - consider making light/dark theme switch possible with term tools : https://shapeshed.com/vim-tmux-alacritty-theme-switcher/
+- look at dotfiles for inspiration : https://github.com/shapeshed/dotfiles/ - modify dotfiles, not roles
 ## neovim
 
 install latest neovim https://github.com/neovim/neovim/wiki/Installing-Neovim#install-from-package
