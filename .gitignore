@@ -1,0 +1,4 @@
+vault.pwd
+vault.yml
+*.code-workspace
+.vscode/
