@@ -1,2 +1,42 @@
 ---
+deb_reqs:
+  - apt-transport-https
+  - ca-certificates
+  - gnupg
+rpm_reqs:
+  - libxcrypt-compat.x86_64
 
+deb_keys:
+  - src: synaptics-repository-keyring.gpg
+    dest: /usr/share/keyrings/synaptics-repository-archive-keyring.gpg
+
+# rpm_repos:
+#   - name: example
+#     description: example
+#     baseurl: https://example
+#     enabled: true
+#     gpgcheck: true
+#     repo_gpgcheck: true
+#     ssl_verify: true
+#     gpgkey: https://example
+# deb repos according to deb822 specification
+# signed-by can be a link to a armored or binary key, an url to it or the base64 value
+deb_repos:
+  - name: synaptics-stable
+    enabled: true
+    types: deb
+    uris:
+      - https://www.synaptics.com/sites/default/files/Ubuntu/
+    suites: stable
+    components:
+      - main
+      - non-free
+    architectures: "{{ package_arch }}"
+    signed_by: /usr/share/keyrings/synaptics-repository-archive-keyring.gpg
+
+rpm_packages:
+  - "{{ displaylink_driver_url }}"
+  - bolt
+deb_packages:
+  - displaylink-driver
+  - bolt

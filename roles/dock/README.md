@@ -7,3 +7,22 @@
 - redshift or similar
 - caffeine ?
 
+# displaylink
+
+## ubntu
+
+<https://www.synaptics.com/products/displaylink-graphics/downloads/ubuntu>
+
+## fedora
+
+<https://github.com/displaylink-rpm/displaylink-rpm/releases>
+
+# thunderbolt
+
+## ubntu
+
+package bolt
+
+## fedora
+
+package bolt

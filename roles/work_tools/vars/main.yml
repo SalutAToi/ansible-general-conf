@@ -1,2 +1,87 @@
 ---
+deb_reqs:
+  - apt-transport-https
+  - ca-certificates
+  - gnupg
+rpm_reqs:
+  - libxcrypt-compat.x86_64
 
+deb_keys: []
+
+rpm_repos:
+  # microsoft - all
+  - name: packages-microsoft-com-prod
+    description: Microsoft RHEL 9 (and compatible) Stable repository
+    baseurl:
+      - https://packages.microsoft.com/rhel/"{{ rhel_base_version }}"/prod
+      - https://packages.microsoft.com/yumrepos/vscode
+    enabled: true
+    gpgcheck: true
+    repo_gpgcheck: true
+    ssl_verify: true
+    gpgkey: https://packages.microsoft.com/keys/microsoft.asc
+  # hashicorp
+  - name: hashicorp-stable
+    description: Hashicorp Stable repository
+    baseurl: https://rpm.releases.hashicorp.com/fedora/$releasever/$basearch/stable
+    enabled: true
+    gpgcheck: true
+    repo_gpgcheck: true
+    ssl_verify: true
+    gpgkey: https://rpm.releases.hashicorp.com/gpg
+  - name: google-stable
+    description: Google SDK stable repository
+    baseurl: https://packages.cloud.google.com/yum/repos/cloud-sdk-el8-x86_64
+    enabled: true
+    gpgcheck: true
+    repo_gpgcheck: false
+    ssl_verify: true
+    gpgkey: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+# deb repos according to deb822 specification
+# signed-by can be a link to a armored or binary key, an url to it or the base64 value
+deb_repos:
+  - name: microsoft-azcli-stable
+    enabled: true
+    types: deb
+    uris:
+      - https://packages.microsoft.com/repos/azure-cli/
+    suites: "{{ ansible_distribution_release }}"
+    components: main
+    architectures: "{{ package_arch }}"
+    signed_by: https://packages.microsoft.com/keys/microsoft.asc
+  - name: microsoft-code-stable
+    enabled: true
+    types: deb
+    uris:
+      - https://packages.microsoft.com/repos/code/
+    suites: "{{ ansible_distribution_release }}"
+    components: main
+    architectures: "{{ package_arch }}"
+    signed_by: https://packages.microsoft.com/keys/microsoft.asc
+  - name: hashicorp-stable
+    enabled: true
+    types: deb
+    uris:
+      - https://apt.releases.hashicorp.com
+    suites: "{{ ansible_distribution_release }}"
+    components: main
+    architectures: "{{ package_arch }}"
+    signed_by: https://apt.releases.hashicorp.com/gpg
+  - name: google-stable
+    enabled: true
+    types: deb
+    uris:
+      - https://packages.cloud.google.com/apt
+    suites: cloud-sdk
+    components: main
+    architectures: "{{ package_arch }}"
+    signed_by: https://apt.releases.hashicorp.com/gpg
+  - name: nodejs
+    enabled: true
+    types: deb
+    uris:
+      - "https://deb.nodesource.com/node_{{ node_version }}.x"
+    suites: nodistro
+    components: main
+    architectures: "{{ package_arch }}"
+    signed_by: https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key

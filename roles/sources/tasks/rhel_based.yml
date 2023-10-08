@@ -1,2 +1,18 @@
 ---
+- name: Install required packages for dnf/yum modifications
+  ansible.builtin.package:
+    name: "{{ item.name }}"
+    state: present
+  loop: "{{ rpm_reqs }}"
 
+- name: Adding dnf repositories
+  ansible.builtin.yum_repository:
+    name: "{{ item.name }}"
+    state: present
+    description: "{{ item.description }}"
+    baseurl: "{{ item.baseurl }}"
+    enabled: "{{ item.enabled }}"
+    gpgcheck: "{{ item.gpgcheck }}"
+    gpgkey: "{{ item.gpgkey }}"
+    repo_gpgcheck: "{{ item.repo_gpgcheck }}"
+    sslverify: "{{ item.sslverify }}"

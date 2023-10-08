@@ -1,2 +1,26 @@
 ---
+- name: Install required packages for apt modifications
+  ansible.builtin.package:
+    name: "{{ item.name }}"
+    state: present
+  loop: "{{ deb_reqs }}"
 
+- name: Add offline signing keys to keyrings
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "0644"
+  loop: "{{ deb_keys }}"
+  when: deb_keys
+
+- name: Add apt repositories
+  ansible.builtin.deb822_repository:
+    name: "{{ item.name }}"
+    state: present
+    enabled: "{{ item.enabled }}"
+    types: "{{ item.types }}"
+    uris: "{{ item.uris }}"
+    architectures: "{{ item.architectures }}"
+    signed_by: "{{ item.key_url }}"
+  loop: "{{ deb_repos }}"
+  notify: Update apt

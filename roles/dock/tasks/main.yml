@@ -2,5 +2,20 @@
 - block:
   - include_tasks: {{ item }}
     loop:
-      - task.yml
+      - rhel_based_sources.yml
+  become: true
+  when: ansible['os_family'] == "Redhat"
+
+- block:
+  - include_tasks: {{ item }}
+    loop:
+      - ubuntu_based_sources.yml
+  become: true
+  when: ansible['os_family'] == "Debian"
+
+- block:
+  - ansible.builtin.meta: flush_handlers
+  - include_tasks: {{ item }}
+    loop:
+      - packages.yml
   become: true

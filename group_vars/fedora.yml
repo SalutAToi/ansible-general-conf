@@ -1,0 +1,6 @@
+---
+# major version of the RHEL base to use (for repos working only for rhel)
+rhel_base_version: 9
+
+# url for the latest displaylink driver (rpm package). CHECK BEFORE RUNNING !
+displaylink_driver_url: https://github.com/displaylink-rpm/displaylink-rpm/releases/download/v5.8.0/fedora-38-displaylink-1.14.1-1.x86_64.rpm

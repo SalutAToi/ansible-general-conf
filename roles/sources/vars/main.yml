@@ -1,2 +1,32 @@
 ---
+deb_reqs:
+  - apt-transport-https
+  - ca-certificates
+  - gnupg
+rpm_reqs:
+  - libxcrypt-compat.x86_64
 
+deb_keys: []
+
+rpm_repos:
+  # protonvpn
+  - name: protonvpn-fedora-stable
+    description: ProtonVPN Fedora Stable repository
+    baseurl: https://repo.protonvpn.com/fedora-$releasever-stable
+    enabled: true
+    gpgcheck: true
+    repo_gpgcheck: true
+    ssl_verify: true
+    gpgkey: https://repo.protonvpn.com/fedora-$releasever-stable/public_key.asc
+# deb repos according to deb822 specification
+# signed-by can be a link to a armored or binary key, an url to it or the base64 value
+deb_repos:
+  - name: protonvpn-stable
+    enabled: true
+    types: deb
+    uris:
+      - https://repo.protonvpn.com/debian
+    suites: stable
+    components: main
+    architectures: "{{ package_arch }}"
+    signed_by: https://repo.protonvpn.com/debian/public_key.asc
