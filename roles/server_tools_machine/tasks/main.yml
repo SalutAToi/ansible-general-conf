@@ -1,0 +1,8 @@
+---
+- block:
+  - include_tasks: "{{ item }}"
+    loop:
+      - packages.yml
+      - alternatives.yml
+      - xdg.yml
+  become: true
