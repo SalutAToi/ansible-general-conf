@@ -1,2 +1,33 @@
 ---
+alternatives:
+  - name: editor
+    link: /usr/bin/editor
+    path: /usr/bin/nvim
+    priority: 10
+    state: selected
+  - name: vim
+    link: /usr/bin/vim
+    path: /usr/bin/nvim
+    priority: 10
+    state: selected
 
+packages:
+  debian:
+    - neovim
+    - git
+    - tmux
+    - exa
+  ubuntu:
+    - neovim
+    - git
+    - tmux
+    - exa
+
+dotfiles:
+  repo: https://github.com/SalutAToi/dotfiles.git
+  bare_location: $XDG_CONFIG_HOME/dotfiles
+  work_tree: $HOME
+
+git_tools:
+  - repo: https://github.com/tmux-plugins/tpm
+    dest: $XDG_CONFIG_HOME/tmux/tpm

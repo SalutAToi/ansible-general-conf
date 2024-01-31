@@ -1,6 +1,13 @@
 ---
 - block:
-  - include_tasks: {{ item }}
+  - include_tasks: "{{ item }}"
     loop:
-      - task.yml
+      - packages.yml
+      - alternatives.yml
   become: true
+# xdg also creates the folders as a task, can't run everything as root
+- block:
+  - include_tasks: "{{ item }}"
+    loop:
+      - xdg.yml
+      - dotfiles.yml

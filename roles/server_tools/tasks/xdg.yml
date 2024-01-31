@@ -1,0 +1,19 @@
+---
+- name: Setting xdg variables in /etc/profile.d
+  ansible.builtin.lineinfile:
+    dest: "{{ xdg_vars.profile_file }}"
+    create: true
+    line: "{{ item.line }}"
+    regexp: "{{ item.regexp }}"
+    mode: "0644"
+  loop: "{{ xdg_vars.lines }}"
+  become: true
+
+- name: Creating xdg dirs if not exist
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: directory
+  loop: "{{ xdg_vars }}"
+
+- name: Reset SSH connection to take xdg change into account
+  meta: reset_connection

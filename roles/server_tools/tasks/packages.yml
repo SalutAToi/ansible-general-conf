@@ -1,0 +1,14 @@
+---
+- name: Installation des paquets serveur sur Debian
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ packages.debian }}"
+  when: ansible_distribution == 'Debian'
+
+- name: Installation des paquets serveur sur Ubuntu
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ packages.ubuntu }}"
+  when: ansible_distribution == 'Ubuntu'
