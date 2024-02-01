@@ -18,9 +18,11 @@ packages:
     - tmux
     - exa
     - zsh
+    - fzf
   ubuntu:
     - neovim
     - git
     - tmux
     - exa
     - zsh
+    - fzf
