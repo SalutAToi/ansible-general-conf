@@ -17,8 +17,10 @@ packages:
     - git
     - tmux
     - exa
+    - zsh
   ubuntu:
     - neovim
     - git
     - tmux
     - exa
+    - zsh
