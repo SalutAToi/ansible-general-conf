@@ -6,3 +6,4 @@
     path: "{{ item.path }}"
     priority: "{{ item.priority | default(omit) }}" # handles not providing precedence
     state: "{{ item.state }}"
+  loop: "{{ alternatives }"

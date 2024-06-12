@@ -1,0 +1,41 @@
+---
+# for fedora, use fido2
+yk_challenge_packages:
+  ubuntu:
+    - yubikey-luks
+    - yubikey-personalization
+    - plymouth
+
+fido2_packages:
+  ubuntu:
+    - dracut
+    - plymouth
+    - fido2-tools
+    - libfido2-1
+    - libfido2-dev
+  fedora:
+    - dracut
+    - plymouth
+    - fido2-tools
+    - libfido2
+    - libfido2-devel
+
+tpm_packages:
+  ubuntu:
+    - plymouth
+  fedora:
+    - plymouth
+    - tpm2-tss
+
+dracut:
+  config_dir: /etc/dracut.conf.d
+
+# see ubuntu bug https://bugs.launchpad.net/ubuntu/+source/dracut/+bug/2049222
+dracut_plymouth_workaround:
+  sbin_path: /usr/sbin/plymouth-set-default-theme
+
+# fido2 module not included, needs to be added manually (fedora, ubuntu)
+dracut_fido_workaround:
+  dest_path: "{{ dracut.config_dir }}/11-fido2.conf"
+  source_file: dracut_fido_loading.conf
+  workaround: true

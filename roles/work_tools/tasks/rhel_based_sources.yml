@@ -1,4 +1,10 @@
 ---
+- name: Install packages for source modifications
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ rpm_reqs }}"
+
 - name: Adding dnf repositories
   ansible.builtin.yum_repository:
     name: "{{ item.name }}"
@@ -9,4 +15,19 @@
     gpgcheck: "{{ item.gpgcheck }}"
     gpgkey: "{{ item.gpgkey }}"
     repo_gpgcheck: "{{ item.repo_gpgcheck }}"
-    sslverify: "{{ item.sslverify }}"
+    sslverify: "{{ item.ssl_verify }}"
+  loop: "{{ rpm_repos }}"
+
+- name: Adding dnf repositories via config manager
+  ansible.builtin.command:
+    cmd: "dnf config-manager --add-repo {{ item.url }}"
+    creates: "{{ item.creates }}"
+  loop: "{{ dnf_config_manager_repos }}"
+  when: dnf_config_manager_repos | length > 0
+
+- name: Adding copr repositories
+  community.general.copr:
+    name: "{{ item }}"
+    state: enabled
+  loop: "{{ copr_projects }}"
+  when: copr_projects | length > 0

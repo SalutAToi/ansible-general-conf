@@ -1,12 +1,30 @@
 ---
 deb_reqs:
+  - packagekit
   - apt-transport-https
+  - curl
+  - gpg
+  - git
+  - wget
   - ca-certificates
-  - gnupg
+  - lsb-release
+  - debian-archive-keyring
+  - flatpak
 rpm_reqs:
+  - PackageKit
   - libxcrypt-compat.x86_64
+  - dnf-plugins-core
+  - ca-certificates
+  - curl
+  - gnupg2
+  - git
+  - wget
+  - lsb-release
 
 deb_keys: []
+
+copr_projects:
+  - zeno/scrcpy
 
 rpm_repos:
   # protonvpn
@@ -18,6 +36,15 @@ rpm_repos:
     repo_gpgcheck: true
     ssl_verify: true
     gpgkey: https://repo.protonvpn.com/fedora-$releasever-stable/public_key.asc
+  # speedtest-cli
+  - name: ookla_speedtest-cli
+    description: Speedtest CLI by Ookla - Fedora Stable repository
+    baseurl: https://packagecloud.io/ookla/speedtest-cli/fedora/$releasever/$basearch
+    enabled: true
+    gpgcheck: false
+    repo_gpgcheck: true
+    ssl_verify: true
+    gpgkey: https://packagecloud.io/ookla/speedtest-cli/gpgkey
 # deb repos according to deb822 specification
 # signed-by can be a link to a armored or binary key, an url to it or the base64 value
 deb_repos:
@@ -30,3 +57,12 @@ deb_repos:
     components: main
     architectures: "{{ package_arch }}"
     signed_by: https://repo.protonvpn.com/debian/public_key.asc
+  - name: ookla_speedtest-cli
+    enabled: true
+    types: deb
+    uris:
+      - https://packagecloud.io/ookla/speedtest-cli/ubuntu
+    suites: "{{ ansible_distribution_release }}"
+    components: main
+    architectures: "{{ package_arch }}"
+    signed_by: https://packagecloud.io/ookla/speedtest-cli/gpgkey

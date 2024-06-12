@@ -1,2 +1,15 @@
 ---
+- name: Install packages for Ubuntu based
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ packages.ubuntu }}"
+  when: ansible_distribution == "Pop!_OS" or ansible_distribution == "Ubuntu" 
+
+- name: Install packages for Fedora
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ packages.fedora }}"
+  when: ansible_distribution == "Fedora"
 

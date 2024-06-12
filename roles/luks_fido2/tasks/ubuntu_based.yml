@@ -1,0 +1,10 @@
+---
+- name: Update apt package list
+  ansible.builtin.apt:
+    update-cache: true
+    cache_valid_time: 14440  # évite la répétition à chaque lancement du role
+
+- name: Install fido2 packages
+  ansible.builtin.apt:
+    name: "{{ fido2_packages.ubuntu }}"
+    state: present

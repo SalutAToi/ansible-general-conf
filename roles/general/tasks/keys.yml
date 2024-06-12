@@ -1,0 +1,18 @@
+---
+- name: Create .ssh if not exists
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.ssh"
+    state: directory
+
+- name: Copy ssh public keys to .ssh
+  ansible.builtin.copy:
+    src: "{{ item.key_filename }}"
+    dest: "{{ ansible_env.HOME }}/.ssh/"
+  loop: "{{ pub_ssh_keys }}"
+
+- name: Copy ssh private keys to .ssh
+  ansible.builtin.copy:
+    src: "{{ item.key_filename }}"
+    dest: "{{ ansible_env.HOME }}/.ssh/"
+    mode: "0600"
+  loop: "{{ priv_ssh_keys }}"

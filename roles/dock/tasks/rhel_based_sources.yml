@@ -9,4 +9,5 @@
     gpgcheck: "{{ item.gpgcheck }}"
     gpgkey: "{{ item.gpgkey }}"
     repo_gpgcheck: "{{ item.repo_gpgcheck }}"
-    sslverify: "{{ item.sslverify }}"
+    sslverify: "{{ item.ssl_verify }}"
+  loop: "{{ rpm_repos }}"

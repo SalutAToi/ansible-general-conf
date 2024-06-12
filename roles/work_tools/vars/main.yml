@@ -1,12 +1,31 @@
 ---
 deb_reqs:
+  - packagekit
   - apt-transport-https
+  - curl
+  - gpg
+  - git
+  - wget
   - ca-certificates
-  - gnupg
+  - lsb-release
+  - debian-archive-keyring
+  - pipx
 rpm_reqs:
+  - PackageKit
   - libxcrypt-compat.x86_64
+  - dnf-plugins-core
+  - ca-certificates
+  - curl
+  - gnupg2
+  - git
+  - wget
+  - lsb-release
+  - pipx
 
 deb_keys: []
+
+copr_projects:
+  - atim/lazygit
 
 rpm_repos:
   # microsoft - all
@@ -31,12 +50,12 @@ rpm_repos:
     gpgkey: https://rpm.releases.hashicorp.com/gpg
   - name: google-stable
     description: Google SDK stable repository
-    baseurl: https://packages.cloud.google.com/yum/repos/cloud-sdk-el8-x86_64
+    baseurl: "https://packages.cloud.google.com/yum/repos/cloud-sdk-el{{ rhel_base_version }}-x86_64"
     enabled: true
     gpgcheck: true
     repo_gpgcheck: false
     ssl_verify: true
-    gpgkey: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    gpgkey: https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
 # deb repos according to deb822 specification
 # signed-by can be a link to a armored or binary key, an url to it or the base64 value
 deb_repos:
@@ -85,3 +104,82 @@ deb_repos:
     components: main
     architectures: "{{ package_arch }}"
     signed_by: https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key
+  - name: github-cli-stable
+    enabled: true
+    types: deb
+    uris:
+      - "https://cli.github.com/packages"
+    suites: stable
+    components: main
+    architectures: "{{ package_arch }}"
+    signed_by: https://cli.github.com/packages/githubcli-archive-keyring.gpg
+  - name: docker-ce
+    enabled: true
+    types: deb
+    uris:
+      - "https://download.docker.com/linux/ubuntu"
+    suites: "{{ ansible_distribution_release }}"
+    components: main
+    architectures: "{{ package_arch }}"
+    signed_by: https://download.docker.com/linux/ubuntu/gpg
+
+dnf_config_manager_repos:
+  - url: https://download.docker.com/linux/fedora/docker-ce.repo
+    creates: /etc/yum.repos.d/docker-ce.repo
+
+packages:
+  ubuntu:
+    - containerd.io
+    - docker-ce
+    - docker-ce-cli
+    - docker-compose
+    - libvirt
+    - libvirt-client-qemu
+    - qemu-kvm
+    - remmina
+    - vagrant
+    - vagrant-libvirt
+    - bind9-utils
+    - ncat
+    - nmap
+    - wireshark
+    - libvirt-wireshark
+    - google-cloud-cli
+    - azure-cli
+    - terraform
+    - lazygit
+    - lastpass-cli
+    - jq
+  fedora:
+    - containerd.io
+    - docker-ce
+    - docker-ce-cli
+    - docker-compose
+    - libvirt
+    - qemu-kvm
+    - remmina
+    - vagrant
+    - vagrant-libvirt
+    - bind-utils
+    - nmap-ncat
+    - nmap
+    - wireshark
+    - libvirt-wireshark
+    - google-cloud-cli
+    - azure-cli
+    - terraform
+    - lazygit
+    - lastpass-cli
+    - jq
+
+git_tools:
+  - repo: https://github.com/LazyVim/starter
+    dest: "{{ lookup('env', 'XDG_CONFIG_HOME') | default(ansible_env.HOME + '/.config') }}/nvim"
+    delete_git_folder: true
+
+pipx_tools:
+  - name: ansible
+    install_deps: true
+    inject:
+      - pywinrm
+      - dnspython

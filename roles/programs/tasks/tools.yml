@@ -1,0 +1,7 @@
+---
+- name: Cloning tools from git repos
+  ansible.builtin.git:
+    repo: "{{ item.repo }}"
+    dest: "{{ item.dest }}"
+  loop: "{{ git_tools }}"
+  when: git_tools | length > 0

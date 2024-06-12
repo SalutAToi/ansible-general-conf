@@ -1,0 +1,42 @@
+---
+- name: Copy dracut workaround config file
+  copy:
+    src: "{{ dracut_fido_workaround.source_file }}"
+    dest: "{{ dracut_fido_workaround.dest_path }}"
+
+- name: Find the disk where the LUKS partition is located
+  ansible.builtin.command: blkid --match-token TYPE="crypto_LUKS" -o device
+  register: blkid_disk_output
+  become: true
+  changed_when: false
+  failed_when: blkid_disk_output.stdout_lines | length != 1
+
+# handles LVM and btrfs (ubuntu and fedora)
+- name: Find the name of the encrypted block device
+  ansible.builtin.shell:
+    cmd: >
+      blkid --match-token TYPE="btrfs" -o device || blkid --match-token TYPE="LVM2_member" -o device
+  register: blkid_encr_block_output
+  become: true
+  changed_when: false
+  failed_when: blkid_encr_block_output.stdout_lines | length != 1
+
+- name: Set facts for LUKS container
+  ansible.builtin.set_fact:
+    luks_device_path: "{{ blkid_disk_output.stdout }}"
+    encrypted_device_name: "{{ blkid_encr_block_output.stdout.split('/')[3] }}"
+
+- name: Setting crypttab file
+  community.general.crypttab:
+    name: "{{ encrypted_device_name }}"
+    opts: fido2-device=auto
+    state: opts_present
+
+- name: Waiting for systemd-cryptenroll
+  ansible.builtin.pause:
+    prompt: |
+      You must now run the following command on the workstation (as root or sudo) :
+      systemd-cryptenroll --fido2-device=auto {{ luks_device_path }}
+
+- name: Rebuilding initramfs with dracut
+  ansible.builtin.command: dracut -f

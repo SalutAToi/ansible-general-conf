@@ -1,0 +1,15 @@
+- name: Install workstation
+  hosts: malatesta
+
+  vars_files:
+    - vault.yml
+
+  roles:
+    # - sources
+    # - dock
+    # - programs
+    # - program_config
+    # - general
+    # - work_tools
+    # - luks_fido2
+    - pam

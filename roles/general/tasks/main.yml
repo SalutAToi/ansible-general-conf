@@ -1,6 +1,20 @@
 ---
 - block:
-  - include_tasks: {{ item }}
+  - include_tasks: "{{ item }}"
+    loop:
+      - alternatives.yml
+      - users.yml
+      - system_config.yml
+  become: true
+
+# mixed contexts (profile file as root, folder creation as user)
+- block:
+  - include_tasks: "{{ item }}"
     loop:
       - xdg.yml
-  become: true
+
+- block:
+  - include_tasks: "{{ item }}"
+    loop:
+      - services.yml
+      - keys.yml

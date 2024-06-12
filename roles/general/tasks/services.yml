@@ -1,0 +1,10 @@
+---
+- name:
+  ansible.builtin.systemd_service:
+    name: "{{ item.name }}"
+    state: "{{ 'started' if item.enabled else 'stopped' }}"
+    enabled: "{{ item.enabled }}"
+    scope: user
+  when: item.use
+  loop: "{{ user_services }}"
+

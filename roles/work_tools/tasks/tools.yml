@@ -1,0 +1,39 @@
+---
+- name: Installing python tools via pipx
+  community.general.pipx:
+    name: "{{ item.name }}"
+    install_deps: "{{ item.install_deps }}"
+    state: latest
+  loop: "{{ pipx_tools }}"
+
+- name: Installing addtional requirements for pipx packages
+  community.general.pipx:
+    name: "{{ item.name }}"
+    state: inject
+    inject_packages: "{{ item.inject }}"
+  when: item.inject | length > 0
+  loop: "{{ pipx_tools }}"
+
+- name: Ensure path with pipx
+  ansible.builtin.command: pipx ensurepath
+
+- name: Cloning tools from git repos
+  ansible.builtin.git:
+    repo: "{{ item.repo }}"
+    dest: "{{ item.dest }}"
+  loop: "{{ git_tools }}"
+  when: git_tools | length > 0
+
+- name: Removing git folder on tools if needed
+  ansible.builtin.file:
+    state: absent
+    dest: "{{ item.dest }}/.git"
+  when: (git_tools | length > 0) and item.delete_git_folder
+  loop: "{{ git_tools }}"
+
+- name: Removing git folder on tools if needed
+  ansible.builtin.file:
+    state: absent
+    dest: "{{ item.dest }}/.gitignore"
+  when: (git_tools | length > 0) and item.delete_git_folder
+  loop: "{{ git_tools }}"

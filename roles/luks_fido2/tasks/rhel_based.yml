@@ -1,0 +1,6 @@
+---
+- name: Install packages with dnf
+  ansible.builtin.dnf:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ fido2_packages.fedora }}"

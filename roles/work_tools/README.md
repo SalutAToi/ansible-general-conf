@@ -1,9 +1,7 @@
 # TODO
 
 - install ansible and plugins with galaxy (aruba, other ?)
-- install ripgrep
 - replace pip by pipx for all tools (use inject for ansible and others), make sure all system level python packages are managed by the distro package manager insteead of pip
-- configure neovim as IDE
 - install node latest <https://github.com/nodesource/distributions/blob/master/README.md> (needed for coc ?)
 - ajouter les depots vagrant hashicorp (voir site) et ajouter plugin libvirt (pour install, voir site dédié)
 - install terraform (from hashicorp)
@@ -13,6 +11,8 @@
 - install lpass (detail somewhere else)
 - install black (python)
 - install nodejs from module (rpm), package (specify ver ! ) on ubu
+  - node_version should be set (defaults or vars ? has to be checked or changed often because of time)
+- github cli rpm : add community repos for fedora !
 
 ## ansible
 

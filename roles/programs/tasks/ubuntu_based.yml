@@ -1,0 +1,20 @@
+---
+- name: Update apt package list
+  ansible.builtin.apt:
+    update-cache: true
+    cache_valid_time: 14440  # évite la répétition à chaque lancement du role
+
+- name: Update packages and dependencies
+  ansible.builtin.apt:
+    upgrade: dist
+
+- name: Install all packages
+  ansible.builtin.apt:
+    name: "{{ packages.ubuntu }}"
+    state: present
+
+- name: Install all packages
+  ansible.builtin.apt:
+    name: "{{ removed_packages.ubuntu }}"
+    state: present
+  when: removed_packages.ubuntu | length > 0

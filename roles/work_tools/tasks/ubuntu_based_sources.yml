@@ -1,4 +1,10 @@
 ---
+- name: Install packages for source modifications
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ deb_reqs }}"
+
 - name: Add offline signing keys to keyrings
   ansible.builtin.copy:
     src: "{{ item.src }}"

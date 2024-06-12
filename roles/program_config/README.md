@@ -1,24 +1,36 @@
-# TODO
+# Ansible role - Program configuration
 
-- configure nextcloud
-- configure alacritty
-    - download fonts for it
-- configure taskwarrior
-- configure transmission to save to Vidéos
-- webdav/caldav integration for nextcloud based on de
-- add "ZDOTDIR=${XDG_CONFIG_HOME:-$HOME/.config}/zsh" to /etc/zsh/zshenv
-## alacritty
-add to the .config/alacritty/alacritty.yml file  :
-env:
-    TERM: xter-256color
-font:
-  normal:
-    family: "UbuntuMono Nerd Font"
-  size: 13.5
+## Improvements and requirements
 
-install font for alacritty/powerline10k: https://github.com/romkatv/powerlevel10k#meslo-nerd-font-patched-for-powerlevel10k (and p10k ?)
-add font to alacritty config according to p10k install guide
-meslo doesn't seem to work, try ubuntumono. also, modify the config file accordingly
-## taskwarrior
+### Fedora
 
-taskwarrior  : transfer .local/share/task/ data and create a config file with data.location set to it
+##### Sway configuration
+
+- remapping CAPS LOCK <-> Escape
+- shortcuts
+- screens
+  - hidpi ?
+  - look into kanshi
+
+##### waybar configuration
+
+##### rofi configuration
+
+##### dunst configuration
+
+##### swaylock configuration
+
+### Ubuntu
+
+- Install nerd fonts
+
+### All
+
+#### Firefox
+
+- install multi profiles
+- install shortcuts/launcher entry for multi profiles
+- install extensions
+- connect firefox account on priv profile
+- tridactyl : bind / to good search mode <https://github.com/tridactyl/tridactyl/issues/64>
+  - also, set editorcmd to "alacritty -e vim %f" to use ctrl i to open redaction page in vim# TODO

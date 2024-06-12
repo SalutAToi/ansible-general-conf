@@ -1,6 +1,0 @@
----
-- block:
-  - include_tasks: {{ item }}
-    loop:
-      - task.yml
-  become: true

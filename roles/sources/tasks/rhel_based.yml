@@ -1,7 +1,7 @@
 ---
 - name: Install required packages for dnf/yum modifications
   ansible.builtin.package:
-    name: "{{ item.name }}"
+    name: "{{ item }}"
     state: present
   loop: "{{ rpm_reqs }}"
 
@@ -15,4 +15,12 @@
     gpgcheck: "{{ item.gpgcheck }}"
     gpgkey: "{{ item.gpgkey }}"
     repo_gpgcheck: "{{ item.repo_gpgcheck }}"
-    sslverify: "{{ item.sslverify }}"
+    sslverify: "{{ item.ssl_verify }}"
+  loop: "{{ rpm_repos }}"
+
+- name: Adding copr repositories
+  community.general.copr:
+    name: "{{ item }}"
+    state: enabled
+  loop: "{{ copr_projects }}"
+  when: copr_projects | length > 0

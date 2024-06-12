@@ -1,0 +1,6 @@
+---
+- name: Install u2f packages
+  ansible.builtin.dnf:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ u2f_packages.fedora }}"

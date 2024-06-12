@@ -1,21 +1,27 @@
 ---
 - block:
-  - include_tasks: {{ item }}
+  - include_tasks: "{{ item }}"
     loop:
       - rhel_based_sources.yml
   become: true
-  when: ansible['os_family'] == "Redhat"
+  when: ansible_os_family == "RedHat"
 
 - block:
-  - include_tasks: {{ item }}
+  - include_tasks: "{{ item }}"
     loop:
       - ubuntu_based_sources.yml
   become: true
-  when: ansible['os_family'] == "Debian"
+  when: ansible_os_family == "Debian"
 
 - block:
   - ansible.builtin.meta: flush_handlers
-  - include_tasks: {{ item }}
+  - include_tasks: "{{ item }}"
     loop:
       - packages.yml
   become: true
+
+# running locally for each user
+- block:
+  - include_tasks: "{{ item }}"
+    loop:
+      - tools.yml

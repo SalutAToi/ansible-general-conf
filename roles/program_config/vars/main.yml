@@ -1,2 +1,11 @@
 ---
+dotfiles:
+  repo: https://github.com/SalutAToi/dotfiles.git
+  bare_location: "{{ lookup('env', 'XDG_CONFIG_HOME') | default(ansible_env.HOME + '/.config') }}/dotfiles"
+  work_tree: "{{ ansible_env.HOME }}"
 
+firefox_profiles:
+  - name: work
+    display_name: Travail
+  - name: pers
+    display_name: Personnel

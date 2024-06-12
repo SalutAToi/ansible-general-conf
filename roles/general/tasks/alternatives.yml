@@ -1,0 +1,9 @@
+---
+- name: Enregistrement des alternatives
+  community.general.alternatives:
+    link: "{{ item.link | default(omit) }}" # omit to manage both debian and rhel families with the same task
+    name: "{{ item.name }}"
+    path: "{{ item.path }}"
+    priority: "{{ item.priority | default(omit) }}" # handles not providing precedence
+    state: "{{ item.state }}"
+  loop: "{{ alternatives }}"

@@ -1,2 +1,41 @@
 ---
+u2f_packages:
+  ubuntu:
+    - libpam-u2f
+    - pamu2fcfg
+  fedora:
+    - pam-u2f
+    - pamu2fcfg
 
+u2f_mapping:
+  username: "{{ ansible_user }}"
+  filepath: /etc/u2f_mappings
+  key_pin: "{{ yubikey_pin }}"
+
+pam_config:
+  ubuntu: []
+  fedora:
+    # - name: swaylock
+    #   state: before
+    #   control: include
+    #   type: auth
+    #   module_path: login
+    #   new_control: sufficient
+    #   new_module_path: pam_u2f.so
+    #   new_type: auth
+    #   module_args:
+    #     - "authfile={{ u2f_mapping.filepath }}"
+    #     - cue
+    #     - pinverification=1
+    - name: sudo
+      state: before
+      control: include
+      type: auth
+      module_path: system-auth
+      new_control: sufficient
+      new_module_path: pam_u2f.so
+      new_type: auth
+      module_args:
+        - "authfile={{ u2f_mapping.filepath }}"
+        - cue
+        - pinverification=0

@@ -1,6 +1,21 @@
 ---
 - block:
-  - include_tasks: {{ item }}
+  - include_tasks: "{{ item }}"
     loop:
-      - task.yml
+      - rhel_based.yml
+  become: true
+  when: ansible_os_family == "RedHat"
+
+- block:
+  - include_tasks: "{{ item }}"
+    loop:
+      - ubuntu_based.yml
+  become: true
+  when: ansible_os_family == "Debian"
+
+- block:
+  - include_tasks: "{{ item }}"
+    loop:
+      - u2f_conf.yml
+      - pam_conf.yml
   become: true

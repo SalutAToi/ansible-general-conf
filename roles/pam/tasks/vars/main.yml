@@ -1,0 +1,10 @@
+---
+u2f_packages:
+  ubuntu:
+    - libpam-u2f
+  fedora:
+    - pam-u2f
+
+u2f_mapping:
+  username: "{{ ansible_user }}"
+  filepath: /etc/u2f_mappings

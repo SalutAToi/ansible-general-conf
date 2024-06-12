@@ -1,0 +1,12 @@
+---
+- name: Ensure nerd-fonts folder exists
+  ansible.builtin.file:
+    state: directory
+    name: /usr/share/fonts/nerd-fonts
+
+- name: Install Nerd fonts
+  ansible.builtin.unarchive:
+    src: "{{ item }}"
+    dest: /usr/share/fonts/nerd-fonts/
+    remote_src: true
+  loop: "{{ fonts }}"

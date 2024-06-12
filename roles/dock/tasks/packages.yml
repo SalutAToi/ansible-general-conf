@@ -6,13 +6,14 @@
   loop: "{{ deb_packages }}"
   when:
     - deb_packages
-    - ansible_facts['os_family'] == "Debian"
+    - ansible_os_family == "Debian"
 
 - name: Install docking station drivers with dnf
   ansible.builtin.dnf:
     name: "{{ item }}"
     state: present
+    disable_gpg_check: true
   loop: "{{ rpm_packages }}"
   when:
     - rpm_packages
-    - ansible_facts['os_family'] == "Redhat"
+    - ansible_os_family == "RedHat"

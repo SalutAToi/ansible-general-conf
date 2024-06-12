@@ -1,0 +1,35 @@
+---
+- name: Find default profile directories
+  ansible.builtin.find:
+    path: "{{ ansible_env.HOME }}/.mozilla/firefox/"
+    patterns: "*default*"
+    recurse: false
+    file_type: directory
+  register: found_directories
+
+- name: Delete the found default profiles
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: absent
+  with_items: "{{ found_directories.files }}"
+
+- name: Create new firefox profiles
+  ansible.builtin.command:
+    cmd: "firefox -CreateProfile {{ item.name }}"
+    creates: "{{ ansible_env.HOME }}/.mozilla/firefox/*.{{ item.name }}"
+  # dirty, but should work
+  # environment:
+  #   DISPLAY: :0
+  loop: "{{ firefox_profiles }}"
+  when: false
+
+- name: Ensure path to desktop files exists
+  ansible.builtin.file:
+    path: "{{ lookup('env', 'XDG_DATA_HOME') | default(ansible_env.HOME + '/.local/share') }}/applications"
+    state: directory
+
+- name: Create desktop file from template
+  ansible.builtin.template:
+    src: firefox.desktop.j2
+    dest: "{{ lookup('env', 'XDG_DATA_HOME') | default(ansible_env.HOME + '/.local/share') }}/applications/firefox.{{ item.name }}.desktop"
+  loop: "{{ firefox_profiles }}"

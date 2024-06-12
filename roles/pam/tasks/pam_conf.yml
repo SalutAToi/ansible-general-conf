@@ -1,0 +1,28 @@
+---
+- name: Modify PAM service files - RHEL
+  community.general.pamd:
+    name: "{{ item.name }}"
+    type: "{{ item.type }}"
+    control: "{{ item.control }}"
+    module_path: "{{ item.module_path }}"
+    new_type: "{{ item.new_type }}"
+    new_control: "{{ item.new_control }}"
+    new_module_path: "{{ item.new_module_path }}"
+    module_arguments: "{{ item.module_args }}"
+    state: "{{ item.state }}"
+  loop: "{{ pam_config.fedora }}"
+  when: ansible_os_family == "RedHat"
+
+- name: Modify PAM service files - Debian
+  community.general.pamd:
+    name: "{{ item.name }}"
+    type: "{{ item.type }}"
+    control: "{{ item.control }}"
+    module_path: "{{ item.module_path }}"
+    new_type: "{{ item.new_type }}"
+    new_control: "{{ item.new_control }}"
+    new_module_path: "{{ item.new_module_path }}"
+    module_arguments: "{{ item.module_args }}"
+    state: "{{ item.state }}"
+  loop: "{{ pam_config.ubuntu }}"
+  when: ansible_os_family == "Debian"

@@ -1,10 +1,13 @@
 ---
 xdg_vars:
-  profile_file: /etc/profile.d/xdg_dirs_desktop_session.sh
+  profile_file: /etc/profile.d/xdg_dirs.sh
   lines:
     - line: "export XDG_CONFIG_HOME=\"$HOME/.config\""
       regexp: "export XDG_CONFIG_HOME="
+      path: $HOME/.config
     - line: "export XDG_DATA_HOME=\"$HOME/.local/share\""
       regexp: "export XDG_DATA_HOME="
+      path: $HOME/.local/share
     - line: "export XDG_CACHE_HOME=\"$HOME/.cache\""
       regexp: "export XDG_CACHE_HOME="
+      path: $HOME/.cache

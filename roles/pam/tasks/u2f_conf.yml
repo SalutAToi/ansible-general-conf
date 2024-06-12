@@ -1,0 +1,25 @@
+---
+- name: Retrieve user configuration line for U2F
+  ansible.builtin.expect:
+    command: "pamu2fcfg -u{{ ansible_user }} -opam://{{ inventory_hostname }} -ipam://{{ inventory_hostname }}"
+    responses:
+      "Enter PIN for": "{{ u2f_mapping.key_pin }}"
+    creates: "{{ u2f_mapping.filepath }}"
+  register: user_u2f_config
+
+
+- debug:
+    var: user_u2f_config
+
+- name: Retrieve U2F config line
+  ansible.builtin.set_fact:
+    u2f_config_line: "{{ user_u2f_config.stdout_lines[0] if 'skipped' not in user_u2f_config.stdout else None }}"
+
+- name: Creating u2f_mappings
+  ansible.builtin.lineinfile:
+    state: present
+    path: "{{ u2f_mapping.filepath }}"
+    line: "{{ u2f_config_line }}"
+    mode: 0644
+    create: true
+  when: "'skipped' not in user_u2f_config.stdout"

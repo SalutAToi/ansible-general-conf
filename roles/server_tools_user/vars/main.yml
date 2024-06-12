@@ -2,9 +2,9 @@
 # using $HOME instead of XDG variables as profile.d vars are not evaluated by ansible
 dotfiles:
   repo: https://github.com/SalutAToi/dotfiles.git
-  bare_location: $HOME/.config/dotfiles
-  work_tree: $HOME
+  bare_location: "{{ lookup('env', 'XDG_CONFIG_HOME') | default(ansible_env.HOME + '/.config') }}/dotfiles"
+  work_tree: "{{ ansible_env.HOME }}"
 
 git_tools:
   - repo: https://github.com/tmux-plugins/tpm
-    dest: $HOME/.config/tmux/plugins/tpm/
+    dest: "{{ lookup('env', 'XDG_CONFIG_HOME') | default(ansible_env.HOME + '/.config') }}/tmux/plugins/tpm/"

@@ -1,2 +1,48 @@
 ---
+alternatives:
+  - name: editor
+    link: /usr/bin/editor
+    path: /usr/bin/nvim
+    priority: 10
+    state: selected
+  - name: vim
+    link: /usr/bin/vim
+    path: /usr/bin/nvim
+    priority: 10
+    state: selected
 
+xdg_vars:
+  profile_file: /etc/profile.d/xdg_dirs.sh
+  lines:
+    - line: "export XDG_CONFIG_HOME=\"$HOME/.config\""
+      regexp: "export XDG_CONFIG_HOME="
+      path: $HOME/.config
+    - line: "export XDG_DATA_HOME=\"$HOME/.local/share\""
+      regexp: "export XDG_DATA_HOME="
+      path: $HOME/.local/share
+    - line: "export XDG_CACHE_HOME=\"$HOME/.cache\""
+      regexp: "export XDG_CACHE_HOME="
+      path: $HOME/.cache
+
+user_services:
+  - name: ssh-agent
+    enabled: true
+    use: true
+  - name: gnome-keyring-daemon
+    enabled: true
+    use: true
+  #   # kanshi is part of sway, run only if using sway
+  # - name: kanshi
+  #   enabled: true
+  #   use: "{{ True if ansible_os_family == 'RedHat' else False }}"
+
+pub_ssh_keys:
+  - key_filename: id_rsa.pub
+  - key_filename: id_rsa_work.pub
+
+priv_ssh_keys:
+  - key_filename: id_rsa
+  - key_filename: id_rsa_work
+
+system_config:
+  hostname: "{{ inventory_hostname }}"
