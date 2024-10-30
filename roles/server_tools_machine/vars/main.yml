@@ -19,10 +19,20 @@ packages:
     - exa
     - zsh
     - fzf
-  ubuntu:
+  redhat:
     - neovim
     - git
     - tmux
-    - exa
     - zsh
+    - fd-find
+    - ripgrep
     - fzf
+    - eza
+    - bat
+    - diffutils
+    - gnupg2
+    - pipx
+    - krb5-libs
+    - krb5-devel
+    - gcc
+    - python3-devel

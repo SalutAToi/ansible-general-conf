@@ -1,0 +1,13 @@
+---
+- name: Set user shell
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    shell: /usr/bin/zsh
+
+# zshenv is in /etc/zshenv on redhat based and /etc/zsh/zshenv on debian based
+- name: Set ZDOTDIR for all users
+  ansible.builtin.lineinfile:
+    create: true
+    state: present
+    path: "{{ '/etc/zsh/zshenv' if ansible_os_family == 'Debian' else '/etc/zshenv' }}"
+    line: "ZDOTDIR=${XDG_CONFIG_HOME:-$HOME/.config}/zsh"

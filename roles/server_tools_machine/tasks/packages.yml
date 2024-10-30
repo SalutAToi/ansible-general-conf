@@ -10,5 +10,5 @@
   ansible.builtin.package:
     name: "{{ item }}"
     state: present
-  loop: "{{ packages.ubuntu }}"
-  when: ansible_distribution == 'Ubuntu'
+  loop: "{{ packages.redhat }}"
+  when: ansible_os_family == 'RedHat'

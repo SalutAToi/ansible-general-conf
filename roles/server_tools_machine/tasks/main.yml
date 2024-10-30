@@ -5,4 +5,5 @@
       - packages.yml
       - alternatives.yml
       - xdg.yml
+      - config.yml
   become: true

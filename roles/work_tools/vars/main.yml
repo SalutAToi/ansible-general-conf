@@ -150,6 +150,7 @@ packages:
     - lazygit
     - lastpass-cli
     - jq
+    - git-lfs
   fedora:
     - containerd.io
     - docker-ce
@@ -171,6 +172,7 @@ packages:
     - lazygit
     - lastpass-cli
     - jq
+    - git-lfs
 
 git_tools:
   - repo: https://github.com/LazyVim/starter
@@ -183,3 +185,5 @@ pipx_tools:
     inject:
       - pywinrm
       - dnspython
+      - passlib
+      - jmespath

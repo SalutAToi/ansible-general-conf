@@ -53,7 +53,7 @@ packages:
     - fzf
     - eza
     - bat
-    - openssh-clients
+    - openssh-client
     - openssh-server
     - diffutils
     - neovim

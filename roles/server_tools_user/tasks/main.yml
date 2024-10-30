@@ -5,4 +5,3 @@
     loop:
       - dotfiles.yml
       - tools.yml
-      - shell.yml

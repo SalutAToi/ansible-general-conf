@@ -1,4 +1,9 @@
+
+# TODO more up to date ?
+
+- on fedora, make sure vagrant is installed from the fedora repo and not hashicorp as it creates issues with the vagrant-libvirt package
 # TODO
+
 
 - install ansible and plugins with galaxy (aruba, other ?)
 - replace pip by pipx for all tools (use inject for ansible and others), make sure all system level python packages are managed by the distro package manager insteead of pip
