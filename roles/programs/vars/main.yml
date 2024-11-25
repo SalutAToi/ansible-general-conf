@@ -11,8 +11,6 @@ packages:
     - fzf
     - exa
     - rust-bat
-    - openssh-client
-    - openssh-server
     - diffutils
     - neovim
     - git
@@ -53,8 +51,6 @@ packages:
     - fzf
     - eza
     - bat
-    - openssh-client
-    - openssh-server
     - diffutils
     - neovim
     - git
@@ -86,10 +82,14 @@ packages:
     - mpv
     - gnome-keyring
     - seahorse
-    - nemo
     - dnf-automatic
     - fwupd
     - gnome-shell-extension-pop-shell
+    - ulauncher
+    - pandoc
+    - texlive
+    - texlive-collection-fontsrecommended
+    - sqlite
 
 
 removed_packages:

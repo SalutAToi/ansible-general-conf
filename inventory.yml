@@ -2,7 +2,7 @@
 all:
   hosts:
     malatesta:
-      ansible_host: 192.168.1.117
+      ansible_host: 127.0.0.1
       ansible_user: christophe
       ansible_password: "{{ user_pwd }}"
       ansible_become_password: "{{ user_pwd }}"
@@ -13,6 +13,6 @@ all:
           hosts:
             malatesta:
   # popos:
-    #   gnome:
-    #     hosts:
-    #       malatesta:
+  #   gnome:
+  #     hosts:
+  #       malatesta:

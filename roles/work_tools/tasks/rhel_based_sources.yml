@@ -20,7 +20,7 @@
 
 - name: Adding dnf repositories via config manager
   ansible.builtin.command:
-    cmd: "dnf config-manager --add-repo {{ item.url }}"
+    cmd: "dnf config-manager addrepo --from-repofile={{ item.url }}"
     creates: "{{ item.creates }}"
   loop: "{{ dnf_config_manager_repos }}"
   when: dnf_config_manager_repos | length > 0

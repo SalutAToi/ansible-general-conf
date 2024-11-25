@@ -10,9 +10,9 @@
     dest: "{{ ansible_env.HOME }}/.ssh/"
   loop: "{{ pub_ssh_keys }}"
 
-- name: Copy ssh private keys to .ssh
-  ansible.builtin.copy:
-    src: "{{ item.key_filename }}"
-    dest: "{{ ansible_env.HOME }}/.ssh/"
-    mode: "0600"
-  loop: "{{ priv_ssh_keys }}"
+# - name: Copy ssh private keys to .ssh
+#   ansible.builtin.copy:
+#     src: "{{ item.key_filename }}"
+#     dest: "{{ ansible_env.HOME }}/.ssh/"
+#     mode: "0600"
+#   loop: "{{ priv_ssh_keys }}"
