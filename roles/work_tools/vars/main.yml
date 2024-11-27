@@ -32,7 +32,7 @@ rpm_repos:
   - name: packages-microsoft-com-prod
     description: Microsoft RHEL 9 (and compatible) Stable repository
     baseurl:
-      - https://packages.microsoft.com/rhel/"{{ rhel_base_version }}"/prod
+      - "https://packages.microsoft.com/rhel/{{ rhel_base_version }}/prod"
       - https://packages.microsoft.com/yumrepos/vscode
     enabled: true
     gpgcheck: true
