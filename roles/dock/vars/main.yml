@@ -35,7 +35,6 @@ deb_repos:
     signed_by: /usr/share/keyrings/synaptics-repository-archive-keyring.gpg
 
 rpm_packages:
-  - "{{ displaylink_driver_url }}"
   - bolt
 deb_packages:
   - displaylink-driver
