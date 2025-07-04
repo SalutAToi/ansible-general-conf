@@ -32,7 +32,5 @@ packages:
     - diffutils
     - gnupg2
     - pipx
-    - krb5-libs
-    - krb5-devel
     - gcc
     - python3-devel
