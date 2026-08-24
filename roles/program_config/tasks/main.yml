@@ -3,4 +3,3 @@
   - include_tasks: "{{ item }}"
     loop:
       - dotfiles.yml
-      - firefox.yml

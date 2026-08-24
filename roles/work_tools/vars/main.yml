@@ -180,8 +180,6 @@ git_tools:
     delete_git_folder: true
 
 pipx_tools:
-  - name: gam7
-    install_deps: true
   - name: ansible
     install_deps: true
     inject:

@@ -1,5 +1,5 @@
 ---
 dotfiles:
-	repo: https://github.com/SalutAToi/dotfiles.git
+  repo: https://github.com/SalutAToi/dotfiles.git
   bare_location: "{{ ansible_env.XDG_CONFIG_HOME | default(ansible_env.HOME + '/.config') }}/dotfiles"
   work_tree: "{{ ansible_env.HOME }}"
