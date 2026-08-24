@@ -13,7 +13,7 @@
 
 - name: Retrieve U2F config line
   ansible.builtin.set_fact:
-    u2f_config_line: "{{ user_u2f_config.stdout_lines[0] if 'skipped' not in user_u2f_config.stdout else None }}"
+    u2f_config_line: "{{ user_u2f_config.stdout_lines[1] if 'skipped' not in user_u2f_config.stdout else None }}"
 
 - name: Creating u2f_mappings
   ansible.builtin.lineinfile:

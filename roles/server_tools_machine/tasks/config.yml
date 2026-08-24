@@ -1,8 +1,10 @@
 ---
+# will fail on GCP with OSlogin as chch does not work (external setting for shell)
 - name: Set user shell
   ansible.builtin.user:
     name: "{{ ansible_user }}"
     shell: /usr/bin/zsh
+  when: false
 
 # zshenv is in /etc/zshenv on redhat based and /etc/zsh/zshenv on debian based
 - name: Set ZDOTDIR for all users

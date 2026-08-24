@@ -27,7 +27,6 @@ packages:
     - fd-find
     - ripgrep
     - fzf
-    - eza
     - bat
     - diffutils
     - gnupg2

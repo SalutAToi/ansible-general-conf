@@ -1,14 +1,18 @@
 ---
 - name: Installation des paquets serveur sur Debian
   ansible.builtin.package:
-    name: "{{ item }}"
+    name: "{{ packages.debian }}"
     state: present
-  loop: "{{ packages.debian }}"
   when: ansible_distribution == 'Debian'
 
-- name: Installation des paquets serveur sur Ubuntu
+- name: Installation d'EPEL sur redhat based
   ansible.builtin.package:
-    name: "{{ item }}"
+    name: epel-release
     state: present
-  loop: "{{ packages.redhat }}"
+  when: ansible_os_family == 'RedHat'
+
+- name: Installation des paquets serveur sur Redhat based
+  ansible.builtin.package:
+    name: "{{ packages.redhat }}"
+    state: present
   when: ansible_os_family == 'RedHat'

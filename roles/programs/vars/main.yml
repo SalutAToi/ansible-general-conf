@@ -2,15 +2,15 @@
 git_tools:
   # tmux plugin manager
   - repo: https://github.com/tmux-plugins/tpm
-    dest: "{{ lookup('env', 'XDG_CONFIG_HOME') | default(ansible_env.HOME + '/.config') }}/tmux/tpm"
+    dest: "/home/christophe/.config/tmux/tpm"
 
 packages:
   ubuntu:
     - fd-find
     - ripgrep
     - fzf
-    - exa
-    - rust-bat
+    - eza
+    - bat
     - diffutils
     - neovim
     - git
@@ -31,7 +31,7 @@ packages:
     - yubikey-manager
     - openjdk-11-jre
     - openjdk-17-jre
-    - task
+    - taskwarrior
     - protonvpn
     - strongswan
     - strongswan-charon
@@ -41,15 +41,12 @@ packages:
     - keepassxc
     - gimp
     - transmission
-    - mpv
-    - gnome-keyring
     - seahorse
     - fwupd
   fedora:
     - fd-find
     - ripgrep
     - fzf
-    - eza
     - bat
     - diffutils
     - neovim
@@ -67,8 +64,7 @@ packages:
     - xdg-user-dirs
     - flatpak
     - yubikey-manager
-    - java-11-openjdk
-    - java-17-openjdk
+    - java-latest-openjdk
     - task
     - protonvpn-stable-release
     - protonvpn-cli
@@ -102,4 +98,4 @@ flatpak_packages:
   - org.signal.Signal
 
 fonts:
-  - https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/Hack.zip
+  - https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/Hack.zip

@@ -1,7 +1,7 @@
 ---
 - name: Install required packages for apt modifications
   ansible.builtin.package:
-    name: "{{ item.name }}"
+    name: "{{ item }}"
     state: present
   loop: "{{ deb_reqs }}"
 
@@ -18,6 +18,8 @@
     name: "{{ item.name }}"
     state: present
     enabled: "{{ item.enabled }}"
+    suites: "{{ item.suites | default(omit) }}"
+    components: "{{ item.components | default(omit) }}"
     types: "{{ item.types }}"
     uris: "{{ item.uris }}"
     architectures: "{{ item.architectures }}"

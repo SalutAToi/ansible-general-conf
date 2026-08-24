@@ -1,19 +1,19 @@
----
-- name: Installing python tools via pipx
-  community.general.pipx:
-    name: "{{ item.name }}"
-    install_deps: "{{ item.install_deps }}"
-    state: latest
-  loop: "{{ pipx_tools }}"
-
-- name: Installing addtional requirements for pipx packages
-  community.general.pipx:
-    name: "{{ item.name }}"
-    state: inject
-    inject_packages: "{{ item.inject }}"
-  when: item.inject | length > 0
-  loop: "{{ pipx_tools }}"
-
+# ---
+# - name: Installing python tools via pipx
+#   community.general.pipx:
+#     name: "{{ item.name }}"
+#     install_deps: "{{ item.install_deps }}"
+#     state: latest
+#   loop: "{{ pipx_tools }}"
+#
+# - name: Installing addtional requirements for pipx packages
+#   community.general.pipx:
+#     name: "{{ item.name }}"
+#     state: inject
+#     inject_packages: "{{ item.inject }}"
+#   when: item.inject | length > 0
+#   loop: "{{ pipx_tools }}"
+#
 - name: Ensure path with pipx
   ansible.builtin.command: pipx ensurepath
 

@@ -56,13 +56,4 @@ deb_repos:
     suites: stable
     components: main
     architectures: "{{ package_arch }}"
-    signed_by: https://repo.protonvpn.com/debian/public_key.asc
-  - name: ookla_speedtest-cli
-    enabled: true
-    types: deb
-    uris:
-      - https://packagecloud.io/ookla/speedtest-cli/ubuntu
-    suites: "{{ ansible_distribution_release }}"
-    components: main
-    architectures: "{{ package_arch }}"
-    signed_by: https://packagecloud.io/ookla/speedtest-cli/gpgkey
+    key_url: https://repo.protonvpn.com/debian/public_key.asc

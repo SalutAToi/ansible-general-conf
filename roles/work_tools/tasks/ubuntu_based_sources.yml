@@ -20,7 +20,9 @@
     enabled: "{{ item.enabled }}"
     types: "{{ item.types }}"
     uris: "{{ item.uris }}"
+    suites: "{{ item.suites | default(omit) }}"
+    components : "{{ item.components | default(omit) }}"
     architectures: "{{ item.architectures }}"
-    signed_by: "{{ item.key_url }}"
+    signed_by: "{{ item.signed_by }}"
   loop: "{{ deb_repos }}"
   notify: Update apt

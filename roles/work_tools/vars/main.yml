@@ -68,11 +68,11 @@ deb_repos:
     components: main
     architectures: "{{ package_arch }}"
     signed_by: https://packages.microsoft.com/keys/microsoft.asc
-  - name: microsoft-code-stable
+  - name: microsoft-prod
     enabled: true
     types: deb
     uris:
-      - https://packages.microsoft.com/repos/code/
+      - https://packages.microsoft.com/ubuntu/24.04/prod
     suites: "{{ ansible_distribution_release }}"
     components: main
     architectures: "{{ package_arch }}"
@@ -94,7 +94,7 @@ deb_repos:
     suites: cloud-sdk
     components: main
     architectures: "{{ package_arch }}"
-    signed_by: https://apt.releases.hashicorp.com/gpg
+    signed_by: https://packages.cloud.google.com/apt/doc/apt-key.gpg
   - name: nodejs
     enabled: true
     types: deb
@@ -119,7 +119,7 @@ deb_repos:
     uris:
       - "https://download.docker.com/linux/ubuntu"
     suites: "{{ ansible_distribution_release }}"
-    components: main
+    components: stable
     architectures: "{{ package_arch }}"
     signed_by: https://download.docker.com/linux/ubuntu/gpg
 
@@ -133,12 +133,11 @@ packages:
     - docker-ce
     - docker-ce-cli
     - docker-compose
-    - libvirt
-    - libvirt-client-qemu
+    - libvirt-daemon-system
+    - libvirt-clients-qemu
     - qemu-kvm
     - remmina
     - vagrant
-    - vagrant-libvirt
     - bind9-utils
     - ncat
     - nmap
@@ -147,15 +146,16 @@ packages:
     - google-cloud-cli
     - azure-cli
     - terraform
-    - lazygit
+      #  - lazygit
     - lastpass-cli
     - jq
     - git-lfs
+    - powershell
   fedora:
     - containerd.io
     - docker-ce
     - docker-ce-cli
-    - docker-compose
+    # - docker-compose
     - libvirt
     - qemu-kvm
     - remmina
@@ -176,10 +176,12 @@ packages:
 
 git_tools:
   - repo: https://github.com/LazyVim/starter
-    dest: "{{ lookup('env', 'XDG_CONFIG_HOME') | default(ansible_env.HOME + '/.config') }}/nvim"
+    dest: "{{ lookup('env', 'XDG_CONFIG_HOME',default=ansible_env.HOME + '/.config') }}/nvim"
     delete_git_folder: true
 
 pipx_tools:
+  - name: gam7
+    install_deps: true
   - name: ansible
     install_deps: true
     inject:
