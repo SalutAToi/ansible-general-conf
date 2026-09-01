@@ -5,11 +5,11 @@
     - vault.yml
 
   roles:
-    # - sources
-    # - dock
-    # - programs
-    # - program_config
-    # - general
-    # - work_tools
-    # - luks_fido2
-    - pam
+      # - sources
+      # - dock
+      # - programs
+      - program_config
+      - general
+      - work_tools
+      # - luks_fido2
+      # - pam

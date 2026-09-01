@@ -1,0 +1,6 @@
+- name: Install server
+  hosts: gcp-vm-example
+
+  roles:
+       - server_tools_machine
+       - server_tools_user
