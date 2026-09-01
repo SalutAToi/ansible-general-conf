@@ -13,10 +13,11 @@ git_tools:
     dest: "{{ ansible_env.XDG_CONFIG_HOME | default(ansible_env.HOME + '/.config') }}/nvim"
     delete_git_folder: true
 
-pipx_tools:
-  - name: ansible
-    install_deps: true
-    inject:
-      - pywinrm
-      - dnspython
-      # - kerberos
+pipx_tools: []
+  # ansible is not necessary on a server
+  # - name: ansible
+  #   install_deps: true
+  #   inject:
+  #     - pywinrm
+  #     - dnspython
+  #     # - kerberos

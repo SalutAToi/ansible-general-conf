@@ -5,17 +5,26 @@
     install_deps: "{{ item.install_deps }}"
     state: latest
   loop: "{{ pipx_tools }}"
+  when: pipx_tools | length > 0
 
 - name: Installing addtional requirements for pipx packages
   community.general.pipx:
     name: "{{ item.name }}"
     state: inject
     inject_packages: "{{ item.inject }}"
-  when: item.inject | length > 0
-  loop: "{{ pipx_tools }}"
+  when: 
+   - item.inject | default([]) | length > 0
+  loop: "{{ pipx_tools | default([]) }}"
 
 - name: Ensure path with pipx
   ansible.builtin.command: pipx ensurepath
+  when: pipx_tools | length > 0
+
+- name: Ensure folders for git tools does not exist
+  ansible.builtin.file:
+    path: "{{ item.dest }}"
+    state: absent
+  loop: "{{ git_tools }}"
 
 - name: Cloning tools from git repos
   ansible.builtin.git:
