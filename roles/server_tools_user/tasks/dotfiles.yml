@@ -1,6 +1,6 @@
 ---
 - name: Check for repository
-  stat:
+  ansible.builtin.stat:
     path: "{{ dotfiles.bare_location }}/HEAD"
   register: git_head
   changed_when: false
@@ -18,3 +18,4 @@
     /usr/bin/git --git-dir={{ dotfiles.bare_location }} --work-tree={{ dotfiles.work_tree }} config --local status.showUntrackedFiles no
     /usr/bin/git --git-dir={{ dotfiles.bare_location }} --work-tree={{ dotfiles.work_tree }} checkout
   when: not git_head.stat.exists
+  changed_when: true

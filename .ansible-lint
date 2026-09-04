@@ -1,0 +1,16 @@
+---
+exclude_paths:
+  - .ansible/
+  - vault.yml
+
+skip_list:
+  # Role variables are intentionally not role-prefixed. Several variables are shared
+  # across roles by design (dotfiles, xdg_vars, packages), and prefixing them would
+  # break that sharing without making anything clearer.
+  - var-naming[no-role-prefix]
+  # Tool and plugin repositories deliberately track their default branch so a rebuild
+  # picks up the current upstream version. See AGENTS.md, "Downloads and clones".
+  - latest[git]
+  # Dotfiles are a bare repository with a detached work tree over $HOME. The git module
+  # cannot drive --git-dir/--work-tree, so the CLI is the only option here.
+  - command-instead-of-module

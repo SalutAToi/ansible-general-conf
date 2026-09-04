@@ -1,0 +1,18 @@
+---
+# Re-applies dotfiles-tracked files under reapply_path after a tool repo has been
+# cloned there, so the clone does not shadow files the dotfiles repo owns.
+- name: Recherche des fichiers dotfiles suivis sous le chemin cloné
+  ansible.builtin.command: >
+    /usr/bin/git --git-dir={{ dotfiles.bare_location }}
+    --work-tree={{ dotfiles.work_tree }}
+    ls-files -- {{ reapply_path }}
+  register: dotfiles_tracked
+  changed_when: false
+
+- name: Réapplication des fichiers dotfiles suivis
+  ansible.builtin.command: >
+    /usr/bin/git --git-dir={{ dotfiles.bare_location }}
+    --work-tree={{ dotfiles.work_tree }}
+    checkout -- {{ reapply_path }}
+  changed_when: true
+  when: dotfiles_tracked.stdout | length > 0

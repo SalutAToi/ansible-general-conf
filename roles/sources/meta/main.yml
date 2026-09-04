@@ -1,0 +1,19 @@
+---
+galaxy_info:
+  role_name: sources
+  author: christophe
+  description: Third-party package repositories and signing keys for workstations
+  license: MIT
+  min_ansible_version: "2.15"
+  platforms:
+    - name: Fedora
+      versions:
+        - all
+    - name: Ubuntu
+      versions:
+        - all
+  galaxy_tags:
+    - workstation
+    - repositories
+
+dependencies: []

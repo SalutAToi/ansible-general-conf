@@ -1,0 +1,3 @@
+---
+system_config:
+  hostname: "{{ inventory_hostname }}"

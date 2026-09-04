@@ -1,0 +1,17 @@
+---
+luks_tpm_crypttab_opts: tpm2-device=auto
+
+# PCR 7 binds to Secure Boot state. Widen only if you understand the trade-off:
+# more PCRs means the unlock breaks on more firmware or bootloader changes.
+luks_tpm_pcrs: "7"
+
+# The TSS libraries come in as dependencies of tpm2-tools. Naming them explicitly is
+# avoided because Ubuntu 24.04 renamed them for the 64-bit time_t transition
+# (libtss2-tcti-device0 -> libtss2-tcti-device0t64) while Debian kept the old name.
+tpm_packages:
+  ubuntu:
+    - tpm2-tools
+    - cryptsetup-initramfs
+  fedora:
+    - tpm2-tools
+    - tpm2-tss

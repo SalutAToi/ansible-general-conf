@@ -1,7 +1,7 @@
 ---
 # xdg also creates the folders as a task, can't run everything as root
-- block:
-  - include_tasks: "{{ item }}"
-    loop:
-      - dotfiles.yml
-      - tools.yml
+- name: Inclusion des tâches utilisateur
+  ansible.builtin.include_tasks: "{{ item }}"
+  loop:
+    - dotfiles.yml
+    - tools.yml

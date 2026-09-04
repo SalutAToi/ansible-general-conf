@@ -1,0 +1,26 @@
+---
+- name: Installation des paquets TPM RedHat
+  become: true
+  when: ansible_os_family == "RedHat"
+  block:
+    - name: Inclusion des tâches RedHat
+      ansible.builtin.include_tasks: "{{ item }}"
+      loop:
+        - rhel_based.yml
+
+- name: Installation des paquets TPM Debian
+  become: true
+  when: ansible_os_family == "Debian"
+  block:
+    - name: Inclusion des tâches Debian
+      ansible.builtin.include_tasks: "{{ item }}"
+      loop:
+        - ubuntu_based.yml
+
+- name: Configuration du déverrouillage TPM
+  become: true
+  block:
+    - name: Inclusion de la configuration TPM
+      ansible.builtin.include_tasks: "{{ item }}"
+      loop:
+        - tpm_conf.yml

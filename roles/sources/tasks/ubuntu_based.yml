@@ -23,6 +23,6 @@
     types: "{{ item.types }}"
     uris: "{{ item.uris }}"
     architectures: "{{ item.architectures }}"
-    signed_by: "{{ item.key_url }}"
+    signed_by: "{{ item.signed_by }}"
   loop: "{{ deb_repos }}"
   notify: Update apt

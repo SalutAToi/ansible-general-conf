@@ -1,0 +1,9 @@
+---
+# Runs once as root in the system play, then once per profile in the user plays.
+- name: Configuration système du poste
+  ansible.builtin.include_tasks: system.yml
+  when: workstation_common_scope in ['system', 'all']
+
+- name: Configuration utilisateur du poste
+  ansible.builtin.include_tasks: user.yml
+  when: workstation_common_scope in ['user', 'all']

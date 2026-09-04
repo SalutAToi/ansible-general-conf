@@ -1,0 +1,44 @@
+---
+- name: Recherche du disque contenant la partition LUKS
+  ansible.builtin.command: blkid --match-token TYPE="crypto_LUKS" -o device
+  register: blkid_disk_output
+  changed_when: false
+  failed_when: blkid_disk_output.stdout_lines | length != 1
+
+# handles LVM and btrfs (ubuntu and fedora)
+- name: Recherche du nom du périphérique chiffré
+  ansible.builtin.shell:
+    cmd: >
+      blkid --match-token TYPE="btrfs" -o device || blkid --match-token TYPE="LVM2_member" -o device
+  register: blkid_encr_block_output
+  changed_when: false
+  failed_when: blkid_encr_block_output.stdout_lines | length != 1
+
+- name: Enregistrement des informations du conteneur LUKS
+  ansible.builtin.set_fact:
+    luks_device_path: "{{ blkid_disk_output.stdout }}"
+    encrypted_device_name: "{{ blkid_encr_block_output.stdout.split('/')[3] }}"
+
+- name: Configuration du fichier crypttab
+  community.general.crypttab:
+    name: "{{ encrypted_device_name }}"
+    opts: "{{ luks_tpm_crypttab_opts }}"
+    state: opts_present
+
+- name: Recherche d'un enrôlement TPM2 existant
+  ansible.builtin.command: "cryptsetup luksDump {{ luks_device_path }}"
+  register: luks_dump
+  changed_when: false
+
+# systemd-cryptenroll asks for the existing passphrase, so it cannot run unattended.
+- name: Attente de l'enrôlement systemd-cryptenroll
+  ansible.builtin.pause:
+    prompt: |
+      You must now run the following command on the workstation (as root or sudo) :
+      systemd-cryptenroll --tpm2-device=auto --tpm2-pcrs={{ luks_tpm_pcrs }} {{ luks_device_path }}
+  when: "'systemd-tpm2' not in luks_dump.stdout"
+
+- name: Reconstruction de l'initramfs
+  ansible.builtin.command: "{{ 'dracut -f' if ansible_os_family == 'RedHat' else 'update-initramfs -u' }}"
+  changed_when: true
+  when: "'systemd-tpm2' not in luks_dump.stdout"

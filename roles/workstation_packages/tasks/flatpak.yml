@@ -1,0 +1,11 @@
+---
+- name: Ajout du dépôt flatpak par défaut
+  community.general.flatpak_remote:
+    name: "{{ flatpak_remote_name }}"
+    state: present
+    flatpakrepo_url: "{{ flatpak_remote_url }}"
+
+- name: Installation des paquets flatpak
+  community.general.flatpak:
+    name: "{{ flatpak_packages }}"
+    state: present

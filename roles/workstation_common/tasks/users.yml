@@ -1,0 +1,13 @@
+---
+- name: Création des comptes utilisateurs du poste
+  ansible.builtin.user:
+    name: "{{ item.name }}"
+    comment: "{{ item.comment | default(omit) }}"
+    shell: "{{ user_shell }}"
+    groups: "{{ item.groups | default([]) }}"
+    append: true
+    create_home: true
+    state: present
+  loop: "{{ workstation_users }}"
+  loop_control:
+    label: "{{ item.name }}"

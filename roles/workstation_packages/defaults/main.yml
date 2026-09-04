@@ -1,0 +1,17 @@
+---
+# system, user or all - selects which half of the role runs.
+workstation_packages_scope: system
+
+# Nerd Fonts are resolved from the latest upstream release instead of a pinned URL.
+nerd_fonts_repo: ryanoasis/nerd-fonts
+nerd_fonts_install_dir: /usr/share/fonts/nerd-fonts
+nerd_fonts:
+  - Hack
+
+flatpak_remote_name: flathub
+flatpak_remote_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+
+flatpak_packages:
+  - com.valvesoftware.Steam
+  - org.torproject.torbrowser-launcher
+  - org.signal.Signal

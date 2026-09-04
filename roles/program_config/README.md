@@ -1,36 +1,56 @@
-# Ansible role - Program configuration
+# program_config
 
-## Improvements and requirements
+Configures user programs from a bare dotfiles repository checked out over the home
+directory. Also provides the shared task file used by other roles to re-apply dotfiles
+after they clone a tool into a dotfiles-managed path.
 
-### Fedora
+## Supported distributions
 
-##### Sway configuration
+Distribution agnostic. The role only needs `git` and a home directory.
 
-- remapping CAPS LOCK <-> Escape
-- shortcuts
-- screens
-  - hidpi ?
-  - look into kanshi
+## Requirements
 
-##### waybar configuration
+- `git` installed on the target
 
-##### rofi configuration
+## Role variables
 
-##### dunst configuration
+| Variable | Default | Description |
+| --- | --- | --- |
+| `dotfiles.repo` | `https://github.com/SalutAToi/dotfiles.git` | Dotfiles repository. |
+| `dotfiles.bare_location` | `$XDG_CONFIG_HOME/dotfiles` | Where the bare repository is stored. |
+| `dotfiles.work_tree` | `$HOME` | Work tree the repository is checked out over. |
 
-##### swaylock configuration
+`reapply_dotfiles.yml` additionally expects `reapply_path`, the path whose tracked
+files should be restored.
 
-### Ubuntu
+## Dependencies
 
-- Install nerd fonts
+None declared in `meta/main.yml`.
 
-### All
+## Example usage
 
-#### Firefox
+Run the role for a user:
 
-- install multi profiles
-- install shortcuts/launcher entry for multi profiles
-- install extensions
-- connect firefox account on priv profile
-- tridactyl : bind / to good search mode <https://github.com/tridactyl/tridactyl/issues/64>
-  - also, set editorcmd to "alacritty -e vim %f" to use ctrl i to open redaction page in vim# TODO
+```yaml
+- role: program_config
+```
+
+Re-apply dotfiles after cloning a tool over a tracked path:
+
+```yaml
+- name: Réapplication des dotfiles sur les chemins clonés
+  ansible.builtin.include_role:
+    name: program_config
+    tasks_from: reapply_dotfiles
+  vars:
+    reapply_path: "{{ item.dest }}"
+  loop: "{{ git_tools }}"
+```
+
+## Notes
+
+- Both profiles check out the same repository and branch. The role is run once inside
+  each profile play, so `$HOME` resolves to the account being configured.
+- The bare repository plus detached work tree pattern requires the `git` CLI. The
+  `git` module cannot drive `--git-dir` and `--work-tree`, which is why
+  `command-instead-of-module` is skipped for this repository.

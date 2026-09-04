@@ -7,11 +7,6 @@ u2f_packages:
     - pam-u2f
     - pamu2fcfg
 
-u2f_mapping:
-  username: "{{ ansible_user }}"
-  filepath: /etc/u2f_mappings
-  key_pin: "{{ yubikey_pin }}"
-
 pam_config:
   ubuntu: []
   fedora:
@@ -24,7 +19,7 @@ pam_config:
     #   new_module_path: pam_u2f.so
     #   new_type: auth
     #   module_args:
-    #     - "authfile={{ u2f_mapping.filepath }}"
+    #     - "authfile={{ u2f_mappings_file }}"
     #     - cue
     #     - pinverification=1
     - name: sudo
@@ -36,6 +31,6 @@ pam_config:
       new_module_path: pam_u2f.so
       new_type: auth
       module_args:
-        - "authfile={{ u2f_mapping.filepath }}"
+        - "authfile={{ u2f_mappings_file }}"
         - cue
         - pinverification=0

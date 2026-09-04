@@ -1,0 +1,5 @@
+---
+- name: Installation des paquets TPM avec dnf
+  ansible.builtin.dnf:
+    name: "{{ tpm_packages.fedora }}"
+    state: present

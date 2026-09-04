@@ -1,9 +1,11 @@
 ---
-- block:
-  - include_tasks: "{{ item }}"
-    loop:
-      - packages.yml
-      - alternatives.yml
-      - xdg.yml
-      - config.yml
+- name: Configuration machine du serveur
   become: true
+  block:
+    - name: Inclusion des tâches machine
+      ansible.builtin.include_tasks: "{{ item }}"
+      loop:
+        - packages.yml
+        - alternatives.yml
+        - xdg.yml
+        - config.yml

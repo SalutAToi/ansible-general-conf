@@ -1,15 +1,58 @@
-- name: Install workstation
+---
+- name: Configuration système du poste
   hosts: malatesta
 
   vars_files:
     - vault.yml
 
   roles:
-      # - sources
-      # - dock
-      # - programs
-      - program_config
-      - general
-      - work_tools
-      # - luks_fido2
-      # - pam
+    - role: sources
+    - role: workstation_packages
+      workstation_packages_scope: system
+    - role: workstation_common
+      workstation_common_scope: system
+    - role: work_profile_tools
+      work_profile_tools_scope: system
+    # - luks_fido2
+    # - luks_tpm
+    # - pam
+
+- name: Configuration du profil personnel
+  hosts: malatesta
+  become: true
+  become_user: christophe_perso
+
+  vars_files:
+    - vault.yml
+
+  vars:
+    user_environment: perso
+
+  roles:
+    - role: workstation_common
+      workstation_common_scope: user
+    - role: program_config
+    - role: workstation_packages
+      workstation_packages_scope: user
+    - role: work_profile_tools
+      work_profile_tools_scope: user
+
+- name: Configuration du profil professionnel
+  hosts: malatesta
+  become: true
+  become_user: christophe_work
+
+  vars_files:
+    - vault.yml
+
+  vars:
+    user_environment: work
+
+  roles:
+    - role: workstation_common
+      workstation_common_scope: user
+    - role: program_config
+    - role: workstation_packages
+      workstation_packages_scope: user
+    - role: work_profile_tools
+      work_profile_tools_scope: user

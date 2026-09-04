@@ -1,5 +1,5 @@
 - name: Install server
-  hosts: gcp-vm-example
+  hosts: centos:debian:ubuntu
 
   roles:
        - server_tools_machine

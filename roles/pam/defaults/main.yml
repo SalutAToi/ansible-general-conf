@@ -1,0 +1,10 @@
+---
+u2f_mappings_file: /etc/u2f_mappings
+
+# One entry per workstation account. Enrollment is interactive: the YubiKey must be
+# touched once per user, and is skipped for users already present in the mappings file.
+u2f_users:
+  - username: christophe_perso
+    key_pin: "{{ yubikey_pin }}"
+  - username: christophe_work
+    key_pin: "{{ yubikey_pin }}"

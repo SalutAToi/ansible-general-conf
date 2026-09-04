@@ -1,0 +1,42 @@
+---
+- name: Résolution de la dernière version des Nerd Fonts
+  ansible.builtin.uri:
+    url: "https://api.github.com/repos/{{ nerd_fonts_repo }}/releases/latest"
+    return_content: true
+  register: nerd_fonts_release
+  check_mode: false
+
+- name: Lecture de la version des Nerd Fonts déjà installée
+  ansible.builtin.slurp:
+    src: "{{ nerd_fonts_install_dir }}/.nerd-fonts-version"
+  register: nerd_fonts_installed
+  failed_when: false
+  changed_when: false
+
+- name: Détermination de la version des Nerd Fonts à installer
+  ansible.builtin.set_fact:
+    nerd_fonts_latest: "{{ nerd_fonts_release.json.tag_name }}"
+    nerd_fonts_current: "{{ (nerd_fonts_installed.content | b64decode | trim) if nerd_fonts_installed.content is defined else '' }}"
+
+- name: Création du dossier des Nerd Fonts
+  ansible.builtin.file:
+    state: directory
+    path: "{{ nerd_fonts_install_dir }}"
+    mode: "0755"
+
+- name: Installation des Nerd Fonts
+  ansible.builtin.unarchive:
+    src: "https://github.com/{{ nerd_fonts_repo }}/releases/download/{{ nerd_fonts_latest }}/{{ item }}.zip"
+    dest: "{{ nerd_fonts_install_dir }}/"
+    remote_src: true
+    mode: "0644"
+  loop: "{{ nerd_fonts }}"
+  when: nerd_fonts_current != nerd_fonts_latest
+  notify: Refresh font cache
+
+- name: Enregistrement de la version des Nerd Fonts installée
+  ansible.builtin.copy:
+    content: "{{ nerd_fonts_latest }}\n"
+    dest: "{{ nerd_fonts_install_dir }}/.nerd-fonts-version"
+    mode: "0644"
+  when: nerd_fonts_current != nerd_fonts_latest

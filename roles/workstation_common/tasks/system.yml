@@ -1,0 +1,11 @@
+---
+- name: Configuration système
+  become: true
+  block:
+    - name: Inclusion des tâches système
+      ansible.builtin.include_tasks: "{{ item }}"
+      loop:
+        - alternatives.yml
+        - users.yml
+        - system_config.yml
+        - xdg_profile.yml

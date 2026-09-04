@@ -1,5 +1,0 @@
----
-- name: Copy Nextcloud config file
-  copy:
-    src: files/nextcloud.cfg
-    dest: "{{ nextcloud_config.config_dir }}"

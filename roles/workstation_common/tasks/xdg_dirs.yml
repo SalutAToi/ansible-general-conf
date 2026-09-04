@@ -1,0 +1,7 @@
+---
+- name: Création des dossiers xdg de l'utilisateur
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: directory
+    mode: "0755"
+  loop: "{{ xdg_vars.lines }}"

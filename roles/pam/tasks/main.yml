@@ -1,21 +1,27 @@
 ---
-- block:
-  - include_tasks: "{{ item }}"
-    loop:
-      - rhel_based.yml
+- name: Installation des paquets U2F RedHat
   become: true
   when: ansible_os_family == "RedHat"
+  block:
+    - name: Inclusion des tâches RedHat
+      ansible.builtin.include_tasks: "{{ item }}"
+      loop:
+        - rhel_based.yml
 
-- block:
-  - include_tasks: "{{ item }}"
-    loop:
-      - ubuntu_based.yml
+- name: Installation des paquets U2F Debian
   become: true
   when: ansible_os_family == "Debian"
+  block:
+    - name: Inclusion des tâches Debian
+      ansible.builtin.include_tasks: "{{ item }}"
+      loop:
+        - ubuntu_based.yml
 
-- block:
-  - include_tasks: "{{ item }}"
-    loop:
-      - u2f_conf.yml
-      - pam_conf.yml
+- name: Configuration de PAM et des mappings U2F
   become: true
+  block:
+    - name: Inclusion de la configuration U2F et PAM
+      ansible.builtin.include_tasks: "{{ item }}"
+      loop:
+        - u2f_conf.yml
+        - pam_conf.yml

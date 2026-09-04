@@ -1,0 +1,9 @@
+---
+# Runs once as root in the system play, then once per profile in the user plays.
+- name: Installation système des outils de travail
+  ansible.builtin.include_tasks: system.yml
+  when: work_profile_tools_scope in ['system', 'all']
+
+- name: Installation utilisateur des outils de travail
+  ansible.builtin.include_tasks: user.yml
+  when: work_profile_tools_scope in ['user', 'all']

@@ -1,0 +1,27 @@
+---
+# Reset before clone so a previous clone or dotfiles-tracked content cannot conflict.
+- name: Suppression des dossiers cibles avant clonage
+  ansible.builtin.file:
+    path: "{{ item.dest }}"
+    state: absent
+  loop: "{{ git_tools }}"
+  loop_control:
+    label: "{{ item.dest }}"
+
+- name: Clonage des outils depuis les dépôts git
+  ansible.builtin.git:
+    repo: "{{ item.repo }}"
+    dest: "{{ item.dest }}"
+  loop: "{{ git_tools }}"
+  loop_control:
+    label: "{{ item.repo }}"
+
+- name: Réapplication des dotfiles sur les chemins clonés
+  ansible.builtin.include_role:
+    name: program_config
+    tasks_from: reapply_dotfiles
+  vars:
+    reapply_path: "{{ item.dest }}"
+  loop: "{{ git_tools }}"
+  loop_control:
+    label: "{{ item.dest }}"

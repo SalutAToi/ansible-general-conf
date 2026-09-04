@@ -1,0 +1,22 @@
+---
+galaxy_info:
+  role_name: server_tools_user
+  author: christophe
+  description: User-level server tooling - dotfiles checkout, git-based tools and pipx applications
+  license: MIT
+  min_ansible_version: "2.15"
+  platforms:
+    - name: EL
+      versions:
+        - all
+    - name: Ubuntu
+      versions:
+        - all
+    - name: Debian
+      versions:
+        - all
+  galaxy_tags:
+    - server
+    - dotfiles
+
+dependencies: []

@@ -12,37 +12,55 @@
     name: "{{ item.name }}"
     state: inject
     inject_packages: "{{ item.inject }}"
-  when: 
-   - item.inject | default([]) | length > 0
+  when:
+    - item.inject | default([]) | length > 0
   loop: "{{ pipx_tools | default([]) }}"
 
 - name: Ensure path with pipx
   ansible.builtin.command: pipx ensurepath
+  register: pipx_ensurepath
+  changed_when: "'has been been already added' not in pipx_ensurepath.stdout"
   when: pipx_tools | length > 0
 
-- name: Ensure folders for git tools does not exist
+# Reset before clone so a previous clone or dotfiles-tracked content cannot conflict.
+- name: Suppression des dossiers cibles avant clonage
   ansible.builtin.file:
     path: "{{ item.dest }}"
     state: absent
   loop: "{{ git_tools }}"
+  loop_control:
+    label: "{{ item.dest }}"
 
-- name: Cloning tools from git repos
+- name: Clonage des outils depuis les dépôts git
   ansible.builtin.git:
     repo: "{{ item.repo }}"
     dest: "{{ item.dest }}"
   loop: "{{ git_tools }}"
-  when: git_tools | length > 0
+  loop_control:
+    label: "{{ item.repo }}"
 
-- name: Removing git folder on tools if needed
+# LazyVim expects its starter to be detached from upstream so the config can be tracked
+# in the user's own dotfiles.
+- name: Suppression du dossier git des outils si nécessaire
   ansible.builtin.file:
     state: absent
-    dest: "{{ item.dest }}/.git"
-  when: (git_tools | length > 0) and item.delete_git_folder
-  loop: "{{ git_tools }}"
+    path: "{{ item.dest }}/.git"
+  loop: "{{ git_tools | selectattr('delete_git_folder', 'defined') | selectattr('delete_git_folder') | list }}"
+  loop_control:
+    label: "{{ item.dest }}"
 
-- name: Removing git folder on tools if needed
+- name: Suppression du gitignore des outils si nécessaire
   ansible.builtin.file:
     state: absent
-    dest: "{{ item.dest }}/.gitignore"
-  when: (git_tools | length > 0) and item.delete_git_folder
+    path: "{{ item.dest }}/.gitignore"
+  loop: "{{ git_tools | selectattr('delete_git_folder', 'defined') | selectattr('delete_git_folder') | list }}"
+  loop_control:
+    label: "{{ item.dest }}"
+
+- name: Réapplication des dotfiles sur les chemins clonés
+  ansible.builtin.include_tasks: reapply_dotfiles.yml
+  vars:
+    reapply_path: "{{ item.dest }}"
   loop: "{{ git_tools }}"
+  loop_control:
+    label: "{{ item.dest }}"

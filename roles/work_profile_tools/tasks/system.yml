@@ -1,0 +1,29 @@
+---
+- name: Ajout des dépôts RedHat
+  become: true
+  when: ansible_os_family == "RedHat"
+  block:
+    - name: Inclusion des dépôts RedHat
+      ansible.builtin.include_tasks: "{{ item }}"
+      loop:
+        - rhel_based_sources.yml
+
+- name: Ajout des dépôts Debian
+  become: true
+  when: ansible_os_family == "Debian"
+  block:
+    - name: Inclusion des dépôts Debian
+      ansible.builtin.include_tasks: "{{ item }}"
+      loop:
+        - ubuntu_based_sources.yml
+
+- name: Installation des paquets de travail
+  become: true
+  block:
+    - name: Application des handlers de dépôts
+      ansible.builtin.meta: flush_handlers
+
+    - name: Inclusion des tâches de paquets
+      ansible.builtin.include_tasks: "{{ item }}"
+      loop:
+        - packages.yml

@@ -13,3 +13,4 @@
     state: present
     path: "{{ '/etc/zsh/zshenv' if ansible_os_family == 'Debian' else '/etc/zshenv' }}"
     line: "ZDOTDIR=${XDG_CONFIG_HOME:-$HOME/.config}/zsh"
+    mode: "0644"

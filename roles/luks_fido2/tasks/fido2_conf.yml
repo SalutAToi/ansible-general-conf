@@ -1,8 +1,9 @@
 ---
 - name: Copy dracut workaround config file
-  copy:
+  ansible.builtin.copy:
     src: "{{ dracut_fido_workaround.source_file }}"
     dest: "{{ dracut_fido_workaround.dest_path }}"
+    mode: "0644"
 
 - name: Find the disk where the LUKS partition is located
   ansible.builtin.command: blkid --match-token TYPE="crypto_LUKS" -o device
@@ -40,3 +41,4 @@
 
 - name: Rebuilding initramfs with dracut
   ansible.builtin.command: dracut -f
+  changed_when: true

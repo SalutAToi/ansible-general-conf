@@ -1,0 +1,4 @@
+---
+# ansible does not return amd64 but x86_64 for the arch, which may not work for ubuntu packages
+package_arch: amd64
+node_version: 24

@@ -1,0 +1,21 @@
+---
+- name: Création du dossier .ssh
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.ssh"
+    state: directory
+    mode: "0700"
+
+- name: Copie des clés publiques communes aux deux profils
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "{{ ansible_env.HOME }}/.ssh/"
+    mode: "0644"
+  loop: "{{ common_pub_ssh_keys }}"
+
+- name: Copie des clés publiques propres au profil work
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "{{ ansible_env.HOME }}/.ssh/"
+    mode: "0644"
+  loop: "{{ work_pub_ssh_keys }}"
+  when: user_environment == 'work'

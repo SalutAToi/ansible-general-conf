@@ -16,9 +16,30 @@ packages:
     - neovim
     - git
     - tmux
-    - exa
     - zsh
     - fzf
+    - fd-find
+    - ripgrep
+    - bat
+    - diffutils
+    - gnupg
+    - pipx
+    - gcc
+    - python3-dev
+  ubuntu:
+    - neovim
+    - git
+    - tmux
+    - zsh
+    - fzf
+    - fd-find
+    - ripgrep
+    - bat
+    - diffutils
+    - gnupg
+    - pipx
+    - gcc
+    - python3-dev
   redhat:
     - neovim
     - git

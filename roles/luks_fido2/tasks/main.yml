@@ -1,20 +1,26 @@
 ---
-- block:
-  - include_tasks: "{{ item }}"
-    loop:
-      - rhel_based.yml
+- name: Installation des paquets FIDO2 RedHat
   become: true
   when: ansible_os_family == "RedHat"
+  block:
+    - name: Inclusion des tâches RedHat
+      ansible.builtin.include_tasks: "{{ item }}"
+      loop:
+        - rhel_based.yml
 
-- block:
-  - include_tasks: "{{ item }}"
-    loop:
-      - ubuntu_based.yml
+- name: Installation des paquets FIDO2 Debian
   become: true
   when: ansible_os_family == "Debian"
+  block:
+    - name: Inclusion des tâches Debian
+      ansible.builtin.include_tasks: "{{ item }}"
+      loop:
+        - ubuntu_based.yml
 
-- block:
-  - include_tasks: "{{ item }}"
-    loop:
-      - fido2_conf.yml
+- name: Configuration du déverrouillage FIDO2
   become: true
+  block:
+    - name: Inclusion de la configuration FIDO2
+      ansible.builtin.include_tasks: "{{ item }}"
+      loop:
+        - fido2_conf.yml

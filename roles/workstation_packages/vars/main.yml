@@ -1,0 +1,93 @@
+---
+git_tools:
+  # tmux plugin manager
+  - repo: https://github.com/tmux-plugins/tpm
+    dest: "{{ ansible_env.XDG_CONFIG_HOME | default(ansible_env.HOME + '/.config') }}/tmux/plugins/tpm"
+
+packages:
+  ubuntu:
+    - fd-find
+    - ripgrep
+    - fzf
+    - eza
+    - bat
+    - diffutils
+    - neovim
+    - git
+    - gnupg
+    - tmux
+    - zsh
+    - jq
+    - zsh
+    - zsh-autosuggestions
+    - python3-pip
+    - adb
+    - fastboot
+    - scrcpy
+    - alacritty
+    - xdg-user-dirs
+    - speedtest-cli
+    - flatpak
+    - yubikey-manager
+    - openjdk-11-jre
+    - openjdk-17-jre
+    - taskwarrior
+    - protonvpn
+    - strongswan
+    - strongswan-charon
+    - strongswan-nm
+    - nextcloud-desktop
+    - firefox
+    - keepassxc
+    - gimp
+    - transmission
+    - seahorse
+    - fwupd
+  fedora:
+    - fd-find
+    - ripgrep
+    - fzf
+    - bat
+    - diffutils
+    - neovim
+    - git
+    - gnupg2
+    - tmux
+    - android-tools
+    - scrcpy
+    - jq
+    - zsh
+    - zsh-autosuggestions
+    - python3-pip
+    - alacritty
+    - speedtest-cli
+    - xdg-user-dirs
+    - flatpak
+    - yubikey-manager
+    - java-latest-openjdk
+    - task
+    - protonvpn-stable-release
+    - protonvpn-cli
+    - strongswan
+    - strongswan-charon-nm
+    - nextcloud-client
+    - firefox
+    - keepassxc
+    - gimp
+    - transmission
+    - mpv
+    - gnome-keyring
+    - seahorse
+    - dnf-automatic
+    - fwupd
+    - gnome-shell-extension-pop-shell
+    - ulauncher
+    - pandoc
+    - texlive
+    - texlive-collection-fontsrecommended
+    - sqlite
+
+
+removed_packages:
+  ubuntu: []
+  fedora: []

@@ -1,0 +1,12 @@
+---
+- name: Déclaration des variables xdg dans /etc/profile.d
+  ansible.builtin.lineinfile:
+    dest: "{{ xdg_vars.profile_file }}"
+    create: true
+    line: "{{ item.line }}"
+    regexp: "{{ item.regexp }}"
+    mode: "0644"
+  loop: "{{ xdg_vars.lines }}"
+
+- name: Réinitialisation de la connexion pour prendre en compte les variables xdg
+  ansible.builtin.meta: reset_connection

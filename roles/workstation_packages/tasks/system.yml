@@ -1,0 +1,27 @@
+---
+- name: Installation des paquets RedHat
+  become: true
+  when: ansible_os_family == "RedHat"
+  block:
+    - name: Inclusion des tâches RedHat
+      ansible.builtin.include_tasks: "{{ item }}"
+      loop:
+        - rhel_based.yml
+
+- name: Installation des paquets Debian
+  become: true
+  when: ansible_os_family == "Debian"
+  block:
+    - name: Inclusion des tâches Debian
+      ansible.builtin.include_tasks: "{{ item }}"
+      loop:
+        - ubuntu_based.yml
+
+- name: Installation des flatpaks et des polices
+  become: true
+  block:
+    - name: Inclusion des tâches flatpak et polices
+      ansible.builtin.include_tasks: "{{ item }}"
+      loop:
+        - flatpak.yml
+        - fonts.yml

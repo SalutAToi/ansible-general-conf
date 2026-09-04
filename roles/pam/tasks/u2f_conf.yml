@@ -1,25 +1,35 @@
 ---
-- name: Retrieve user configuration line for U2F
-  ansible.builtin.expect:
-    command: "pamu2fcfg -u{{ ansible_user }} -opam://{{ inventory_hostname }} -ipam://{{ inventory_hostname }}"
-    responses:
-      "Enter PIN for": "{{ u2f_mapping.key_pin }}"
-    creates: "{{ u2f_mapping.filepath }}"
-  register: user_u2f_config
+- name: Lecture des mappings U2F existants
+  ansible.builtin.slurp:
+    src: "{{ u2f_mappings_file }}"
+  register: u2f_existing
+  failed_when: false
+  changed_when: false
 
-
-- debug:
-    var: user_u2f_config
-
-- name: Retrieve U2F config line
+- name: Enregistrement des mappings U2F existants
   ansible.builtin.set_fact:
-    u2f_config_line: "{{ user_u2f_config.stdout_lines[1] if 'skipped' not in user_u2f_config.stdout else None }}"
+    u2f_existing_content: "{{ (u2f_existing.content | b64decode) if u2f_existing.content is defined else '' }}"
 
-- name: Creating u2f_mappings
+# Interactive: requires a YubiKey touch for each user not already enrolled.
+- name: Récupération de la ligne de configuration U2F par utilisateur
+  ansible.builtin.expect:
+    command: "pamu2fcfg -u{{ item.username }} -opam://{{ inventory_hostname }} -ipam://{{ inventory_hostname }}"
+    responses:
+      "Enter PIN for": "{{ item.key_pin }}"
+  register: u2f_registrations
+  loop: "{{ u2f_users }}"
+  loop_control:
+    label: "{{ item.username }}"
+  when: item.username ~ ':' not in u2f_existing_content
+
+- name: Ajout des mappings U2F
   ansible.builtin.lineinfile:
     state: present
-    path: "{{ u2f_mapping.filepath }}"
-    line: "{{ u2f_config_line }}"
-    mode: 0644
+    path: "{{ u2f_mappings_file }}"
+    line: "{{ item.stdout_lines[1] }}"
+    mode: "0644"
     create: true
-  when: "'skipped' not in user_u2f_config.stdout"
+  loop: "{{ u2f_registrations.results }}"
+  loop_control:
+    label: "{{ item.item.username }}"
+  when: not (item.skipped | default(false))

@@ -7,16 +7,20 @@ all:
       ansible_password: "{{ user_pwd }}"
       ansible_become_password: "{{ user_pwd }}"
       ansible_python_interpreter: /usr/bin/python
-    gcp-vm-example:
-      ansible_user: user
+    ccs-online-catercare-app:
+      ansible_user: christophe_bahin_catercare_com_a
       ansible_connection: google.cloud.iap
-      ansible_gcloud_project: gpc-project
-      ansible_gcloud_zone: australia-southeast1-a
+      ansible_gcloud_project: erudite-skill-379500
+      ansible_gcloud_zone: australia-southeast2-c
       ansible_ssh_args: "-A"
   children:
        centos:
-        hosts:
-        gcp-vm-example::
+          hosts:
+       debian:
+          hosts:
+       ubuntu:
+          hosts:
+            ccs-online-catercare-app:
        fedora:
          children:
            gnome:

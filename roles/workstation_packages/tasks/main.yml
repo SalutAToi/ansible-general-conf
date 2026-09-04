@@ -1,0 +1,9 @@
+---
+# Runs once as root in the system play, then once per profile in the user plays.
+- name: Installation système des paquets du poste
+  ansible.builtin.include_tasks: system.yml
+  when: workstation_packages_scope in ['system', 'all']
+
+- name: Installation utilisateur des outils du poste
+  ansible.builtin.include_tasks: user.yml
+  when: workstation_packages_scope in ['user', 'all']

@@ -1,0 +1,65 @@
+---
+- name: Installing python tools via pipx
+  community.general.pipx:
+    name: "{{ item.name }}"
+    install_deps: "{{ item.install_deps }}"
+    state: latest
+  loop: "{{ pipx_tools }}"
+
+- name: Installing addtional requirements for pipx packages
+  community.general.pipx:
+    name: "{{ item.name }}"
+    state: inject
+    inject_packages: "{{ item.inject }}"
+  when: item.inject | length > 0
+  loop: "{{ pipx_tools }}"
+
+- name: Ensure path with pipx
+  ansible.builtin.command: pipx ensurepath
+  register: pipx_ensurepath
+  changed_when: "'has been been already added' not in pipx_ensurepath.stdout"
+
+# Reset before clone so a previous clone or dotfiles-tracked content cannot conflict.
+- name: Suppression des dossiers cibles avant clonage
+  ansible.builtin.file:
+    path: "{{ item.dest }}"
+    state: absent
+  loop: "{{ git_tools }}"
+  loop_control:
+    label: "{{ item.dest }}"
+
+- name: Clonage des outils depuis les dépôts git
+  ansible.builtin.git:
+    repo: "{{ item.repo }}"
+    dest: "{{ item.dest }}"
+  loop: "{{ git_tools }}"
+  loop_control:
+    label: "{{ item.repo }}"
+
+# LazyVim expects its starter to be detached from upstream so the config can be tracked
+# in the user's own dotfiles.
+- name: Suppression du dossier git des outils si nécessaire
+  ansible.builtin.file:
+    state: absent
+    path: "{{ item.dest }}/.git"
+  loop: "{{ git_tools | selectattr('delete_git_folder', 'defined') | selectattr('delete_git_folder') | list }}"
+  loop_control:
+    label: "{{ item.dest }}"
+
+- name: Suppression du gitignore des outils si nécessaire
+  ansible.builtin.file:
+    state: absent
+    path: "{{ item.dest }}/.gitignore"
+  loop: "{{ git_tools | selectattr('delete_git_folder', 'defined') | selectattr('delete_git_folder') | list }}"
+  loop_control:
+    label: "{{ item.dest }}"
+
+- name: Réapplication des dotfiles sur les chemins clonés
+  ansible.builtin.include_role:
+    name: program_config
+    tasks_from: reapply_dotfiles
+  vars:
+    reapply_path: "{{ item.dest }}"
+  loop: "{{ git_tools }}"
+  loop_control:
+    label: "{{ item.dest }}"

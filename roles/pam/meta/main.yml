@@ -1,0 +1,19 @@
+---
+galaxy_info:
+  role_name: pam
+  author: christophe
+  description: PAM configuration for YubiKey-backed authentication through pam_u2f
+  license: MIT
+  min_ansible_version: "2.15"
+  platforms:
+    - name: Fedora
+      versions:
+        - all
+    - name: Ubuntu
+      versions:
+        - all
+  galaxy_tags:
+    - workstation
+    - security
+
+dependencies: []

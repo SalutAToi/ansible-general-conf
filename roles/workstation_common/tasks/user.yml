@@ -1,0 +1,7 @@
+---
+- name: Inclusion des tâches utilisateur
+  ansible.builtin.include_tasks: "{{ item }}"
+  loop:
+    - xdg_dirs.yml
+    - services.yml
+    - keys.yml

@@ -1,0 +1,5 @@
+---
+- name: Inclusion des tâches utilisateur
+  ansible.builtin.include_tasks: "{{ item }}"
+  loop:
+    - tools.yml

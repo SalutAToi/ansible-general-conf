@@ -10,4 +10,4 @@
   become: true
 
 - name: Reset SSH connection to take xdg change into account
-  meta: reset_connection
+  ansible.builtin.meta: reset_connection

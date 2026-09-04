@@ -56,4 +56,4 @@ deb_repos:
     suites: stable
     components: main
     architectures: "{{ package_arch }}"
-    key_url: https://repo.protonvpn.com/debian/public_key.asc
+    signed_by: https://repo.protonvpn.com/debian/public_key.asc

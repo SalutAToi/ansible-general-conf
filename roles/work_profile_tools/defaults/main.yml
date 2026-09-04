@@ -1,0 +1,8 @@
+---
+# system, user or all - selects which half of the role runs.
+work_profile_tools_scope: system
+
+# Vendor repositories are keyed on the Ubuntu release the host is based on. Pop!_OS
+# tracks Ubuntu versions, so the distribution facts resolve correctly for both.
+microsoft_repo_ubuntu_version: "{{ ansible_distribution_version }}"
+docker_apt_distro: ubuntu
