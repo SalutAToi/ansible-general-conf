@@ -31,7 +31,7 @@
   roles:
     - role: workstation_common
       workstation_common_scope: user
-    - role: program_config
+    - role: dotfiles
     - role: workstation_packages
       workstation_packages_scope: user
     - role: work_profile_tools
@@ -51,7 +51,7 @@
   roles:
     - role: workstation_common
       workstation_common_scope: user
-    - role: program_config
+    - role: dotfiles
     - role: workstation_packages
       workstation_packages_scope: user
     - role: work_profile_tools

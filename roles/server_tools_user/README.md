@@ -1,7 +1,7 @@
 # server_tools_user
 
-User-level server configuration: dotfiles checkout, git-based tools and pipx
-applications.
+User-level server configuration: git-based tools and pipx applications. Dotfiles are
+handled by the shared `dotfiles` role, run before this one.
 
 ## Supported distributions
 
@@ -11,29 +11,28 @@ Distribution agnostic. Relies on packages installed by `server_tools_machine`.
 
 - `git` and `pipx` installed, which `server_tools_machine` provides
 - Runs unprivileged, as the target user
+- The `dotfiles` role, run first so its `dotfiles` variable and checkout are available
 
 ## Role variables
 
 | Variable | Default | Description |
 | --- | --- | --- |
-| `dotfiles.repo` | `https://github.com/SalutAToi/dotfiles.git` | Dotfiles repository. |
-| `dotfiles.bare_location` | `$XDG_CONFIG_HOME/dotfiles` | Where the bare repository is stored. |
-| `dotfiles.work_tree` | `$HOME` | Work tree the repository is checked out over. |
 | `git_tools` | tpm, LazyVim starter | Tool repositories to clone, with `delete_git_folder`. |
 | `pipx_tools` | `[]` | pipx applications to install, with optional injected packages. |
 | `alternatives` | editor and vim to nvim | Alternatives, applied only where permitted. |
 
-`reapply_dotfiles.yml` additionally expects `reapply_path`.
-
 ## Dependencies
 
-None declared in `meta/main.yml`.
+None declared in `meta/main.yml`. The role calls `dotfiles` through `include_role`
+with `tasks_from: reapply`, so that role must be present and must run first in the
+playbook so its variables are already set.
 
 ## Example usage
 
 ```yaml
 - hosts: centos:debian:ubuntu
   roles:
+    - dotfiles
     - server_tools_user
 ```
 
@@ -43,5 +42,3 @@ None declared in `meta/main.yml`.
   afterwards, so a clone cannot shadow dotfiles-tracked files.
 - `delete_git_folder` detaches a cloned starter config from upstream so it can be
   tracked in the user's own dotfiles. This is what LazyVim expects.
-- The role keeps its own copy of `reapply_dotfiles.yml` rather than reusing
-  `program_config`, so a server host never depends on a workstation role.

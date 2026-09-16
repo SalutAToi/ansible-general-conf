@@ -18,10 +18,7 @@
 
 - name: Réapplication des dotfiles sur les chemins clonés
   ansible.builtin.include_role:
-    name: program_config
-    tasks_from: reapply_dotfiles
+    name: dotfiles
+    tasks_from: reapply
   vars:
-    reapply_path: "{{ item.dest }}"
-  loop: "{{ git_tools }}"
-  loop_control:
-    label: "{{ item.dest }}"
+    reapply_paths: "{{ git_tools | map(attribute='dest') | list }}"

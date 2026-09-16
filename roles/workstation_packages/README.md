@@ -12,7 +12,7 @@ selected from facts.
 
 - Collection `community.general` (for `flatpak` and `flatpak_remote`)
 - Network access to the GitHub API to resolve the current Nerd Fonts release
-- `program_config`, whose `reapply_dotfiles` tasks are reused after cloning tools
+- The `dotfiles` role, whose `reapply` tasks are reused after cloning tools
 
 ## Role variables
 
@@ -30,8 +30,8 @@ Package lists and `git_tools` live in `vars/main.yml`.
 
 ## Dependencies
 
-None declared in `meta/main.yml`. The role calls `program_config` through
-`include_role` with `tasks_from: reapply_dotfiles`, so that role must be present.
+None declared in `meta/main.yml`. The role calls `dotfiles` through `include_role`
+with `tasks_from: reapply`, so that role must be present.
 
 ## Scopes
 

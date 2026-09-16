@@ -31,6 +31,12 @@ Groups only decide which hosts a play targets.
 
 ## Roles
 
+### Shared
+
+| Role | Purpose |
+| --- | --- |
+| [dotfiles](roles/dotfiles/README.md) | Bare-repository dotfiles checkout, used by both workstation and server plays |
+
 ### Workstation
 
 | Role | Purpose |
@@ -38,7 +44,6 @@ Groups only decide which hosts a play targets.
 | [workstation_common](roles/workstation_common/README.md) | User accounts, alternatives, system config, XDG, SSH public keys |
 | [workstation_packages](roles/workstation_packages/README.md) | Distribution packages, flatpaks, Nerd Fonts, git tools |
 | [work_profile_tools](roles/work_profile_tools/README.md) | Container, virtualization, infrastructure and cloud tooling |
-| [program_config](roles/program_config/README.md) | Dotfiles checkout and the shared dotfiles re-apply tasks |
 | [sources](roles/sources/README.md) | Third-party package repositories and signing keys |
 | [pam](roles/pam/README.md) | YubiKey authentication through `pam_u2f` |
 | [luks_fido2](roles/luks_fido2/README.md) | FIDO2-backed LUKS unlock |
@@ -49,7 +54,7 @@ Groups only decide which hosts a play targets.
 | Role | Purpose |
 | --- | --- |
 | [server_tools_machine](roles/server_tools_machine/README.md) | Machine-level packages, alternatives, XDG, shell config |
-| [server_tools_user](roles/server_tools_user/README.md) | Dotfiles, git tools and pipx applications |
+| [server_tools_user](roles/server_tools_user/README.md) | Git tools and pipx applications |
 
 ## Usage
 

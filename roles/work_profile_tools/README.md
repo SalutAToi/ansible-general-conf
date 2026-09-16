@@ -13,7 +13,7 @@ keyed on distribution facts.
 - Collection `community.general` (for `copr` and `pipx`)
 - `group_vars` providing `package_arch` and `node_version` for Debian family hosts,
   and `rhel_base_version` for RedHat family hosts
-- `program_config`, whose `reapply_dotfiles` tasks are reused after cloning tools
+- The `dotfiles` role, whose `reapply` tasks are reused after cloning tools
 
 ## Role variables
 
@@ -28,8 +28,8 @@ Repository definitions, package lists, `git_tools` and `pipx_tools` live in
 
 ## Dependencies
 
-None declared in `meta/main.yml`. The role calls `program_config` through
-`include_role` with `tasks_from: reapply_dotfiles`, so that role must be present.
+None declared in `meta/main.yml`. The role calls `dotfiles` through `include_role`
+with `tasks_from: reapply`, so that role must be present.
 
 ## Scopes
 

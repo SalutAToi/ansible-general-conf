@@ -1,0 +1,40 @@
+---
+- name: Clonage ou mise à jour du dépôt dotfiles en bare
+  ansible.builtin.git:
+    repo: "{{ dotfiles.repo }}"
+    dest: "{{ dotfiles.bare_location }}"
+    bare: true
+    clone: true
+
+# A bare repo only gets an index once a checkout has succeeded against it, so its
+# presence is a more reliable "already done" signal than the repo simply existing -
+# a clone can succeed while the checkout below still fails and needs retrying.
+- name: Vérification qu'un premier checkout a déjà été effectué
+  ansible.builtin.stat:
+    path: "{{ dotfiles.bare_location }}/index"
+  register: dotfiles_index
+
+- name: Listing de tous les fichiers suivis par les dotfiles
+  ansible.builtin.command: "/usr/bin/git --git-dir={{ dotfiles.bare_location }} ls-tree -r --name-only HEAD"
+  register: dotfiles_tracked_files
+  changed_when: false
+  when: not dotfiles_index.stat.exists
+
+# git refuses to checkout over pre-existing untracked files (e.g. .bashrc shipped by
+# the base image). Clearing every path the dotfiles repo owns first, across the whole
+# tree, avoids discovering conflicts one file at a time.
+- name: Suppression des fichiers existants avant le premier checkout
+  ansible.builtin.file:
+    path: "{{ dotfiles.work_tree }}/{{ item }}"
+    state: absent
+  loop: "{{ dotfiles_tracked_files.stdout_lines }}"
+  loop_control:
+    label: "{{ item }}"
+  when: not dotfiles_index.stat.exists
+
+- name: Extraction des dotfiles dans le home et configuration de git
+  ansible.builtin.shell: |
+    /usr/bin/git --git-dir={{ dotfiles.bare_location }} --work-tree={{ dotfiles.work_tree }} config --local status.showUntrackedFiles no
+    /usr/bin/git --git-dir={{ dotfiles.bare_location }} --work-tree={{ dotfiles.work_tree }} checkout
+  when: not dotfiles_index.stat.exists
+  changed_when: true

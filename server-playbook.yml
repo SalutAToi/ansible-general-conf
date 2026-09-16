@@ -2,5 +2,6 @@
   hosts: centos:debian:ubuntu
 
   roles:
-       - server_tools_machine
+      #  - server_tools_machine
+       - dotfiles
        - server_tools_user

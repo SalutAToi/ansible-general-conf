@@ -1,0 +1,35 @@
+---
+# Re-applies dotfiles-tracked files under each path in reapply_paths after tool repos
+# have been cloned there, so a clone does not shadow files the dotfiles repo owns.
+# The loop lives here rather than on the caller's include: a looped include rebinds
+# item, which breaks the parent include path resolution (see git history for the bug).
+# --work-tree is required here: reapply_path is absolute, and git can only resolve an
+# absolute pathspec into a repo-relative one when it knows the work tree root.
+- name: Recherche des fichiers dotfiles suivis sous les chemins clonés
+  ansible.builtin.command: >
+    /usr/bin/git --git-dir={{ dotfiles.bare_location }}
+    --work-tree={{ dotfiles.work_tree }}
+    ls-tree -r --name-only HEAD -- {{ reapply_path }}
+  register: dotfiles_tracked
+  changed_when: false
+  loop: "{{ reapply_paths }}"
+  loop_control:
+    loop_var: reapply_path
+
+# Same whole-subtree deletion as the initial checkout: a tool clone can leave files
+# git considers untracked at paths the dotfiles repo is about to check out again.
+- name: Suppression des fichiers avant réapplication
+  ansible.builtin.file:
+    path: "{{ dotfiles.work_tree }}/{{ item }}"
+    state: absent
+  loop: "{{ dotfiles_tracked.results | map(attribute='stdout_lines') | flatten }}"
+  loop_control:
+    label: "{{ item }}"
+
+- name: Réapplication des fichiers dotfiles suivis
+  ansible.builtin.command: "/usr/bin/git --git-dir={{ dotfiles.bare_location }} --work-tree={{ dotfiles.work_tree }} checkout -- {{ item.reapply_path }}"
+  changed_when: true
+  loop: "{{ dotfiles_tracked.results }}"
+  loop_control:
+    label: "{{ item.reapply_path }}"
+  when: item.stdout | length > 0

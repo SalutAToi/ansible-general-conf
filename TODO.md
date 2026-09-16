@@ -19,9 +19,11 @@ itself unless explicitly stated.
 - installing ansible collections (for google, for example)
 - separate users for work and personal
 - add rclone and google drive mounting to work profile
-- create a group for access to taskwarrior files that should be synced with nextcloud and create the folder
 - add wl-clipboard
-- in the program config, add a step to configure nextcloud by ensuring nextcloud.cfg doesn't exist, then symlinking it to a cfg for a work or personal profile
+- install install_release
+- create completion dir for zsh (see zshrc)
+- install dstask with completions
+- install pipx cater care tools with completions
 
 #### Fedora Sway based
 

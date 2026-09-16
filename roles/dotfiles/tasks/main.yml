@@ -1,0 +1,3 @@
+---
+- name: Inclusion du checkout des dotfiles
+  ansible.builtin.include_tasks: checkout.yml

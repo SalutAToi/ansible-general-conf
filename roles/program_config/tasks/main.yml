@@ -1,5 +1,0 @@
----
-- name: Inclusion de la configuration des dotfiles
-  ansible.builtin.include_tasks: "{{ item }}"
-  loop:
-    - dotfiles.yml
