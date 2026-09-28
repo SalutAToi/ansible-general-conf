@@ -1,0 +1,33 @@
+---
+- name: Résolution de la dernière version de install-release
+  ansible.builtin.uri:
+    url: "https://api.github.com/repos/{{ install_release_repo }}/releases/latest"
+    return_content: true
+  register: install_release_release
+  check_mode: false
+
+- name: Lecture de la version de install-release déjà installée
+  ansible.builtin.slurp:
+    src: "{{ install_release_install_dir }}/.install-release-version"
+  register: install_release_installed
+  failed_when: false
+  changed_when: false
+
+- name: Détermination de la version de install-release à installer
+  ansible.builtin.set_fact:
+    install_release_latest: "{{ install_release_release.json.tag_name }}"
+    install_release_current: "{{ (install_release_installed.content | b64decode | trim) if install_release_installed.content is defined else '' }}"
+
+- name: Installation de install-release
+  ansible.builtin.get_url:
+    url: "https://github.com/{{ install_release_repo }}/releases/download/{{ install_release_latest }}/install-release-linux-{{ ansible_architecture }}"
+    dest: "{{ install_release_install_dir }}/ir"
+    mode: "0755"
+  when: install_release_current != install_release_latest
+
+- name: Enregistrement de la version de install-release installée
+  ansible.builtin.copy:
+    content: "{{ install_release_latest }}\n"
+    dest: "{{ install_release_install_dir }}/.install-release-version"
+    mode: "0644"
+  when: install_release_current != install_release_latest

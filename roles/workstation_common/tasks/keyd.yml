@@ -1,0 +1,23 @@
+---
+# The keyd package does not ship /etc/keyd itself.
+- name: Création du dossier de configuration keyd
+  ansible.builtin.file:
+    path: /etc/keyd
+    state: directory
+    mode: "0755"
+
+- name: Déploiement de la configuration keyd
+  ansible.builtin.copy:
+    content: "{{ keyd_config }}"
+    dest: /etc/keyd/default.conf
+    mode: "0644"
+  notify: Recharger keyd
+
+- name: Activation du service keyd
+  ansible.builtin.systemd_service:
+    name: keyd
+    enabled: true
+    state: started
+    # keyd was just installed in this same play, so systemd's unit cache hasn't
+    # picked up its unit file yet.
+    daemon_reload: true

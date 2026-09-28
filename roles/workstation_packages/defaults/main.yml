@@ -8,6 +8,14 @@ nerd_fonts_install_dir: /usr/share/fonts/nerd-fonts
 nerd_fonts:
   - Hack
 
+# install-release (the `ir` command) manages other single-binary GitHub/GitLab CLI
+# tools. Installed once system-wide so every profile on the workstation can use it.
+install_release_repo: Rishang/install-release
+install_release_install_dir: /usr/local/bin
+
+# Keyboard layout resolved from the latest upstream release, same as Nerd Fonts.
+qwerty_fr_repo: qwerty-fr/qwerty-fr
+
 flatpak_remote_name: flathub
 flatpak_remote_url: https://dl.flathub.org/repo/flathub.flatpakrepo
 

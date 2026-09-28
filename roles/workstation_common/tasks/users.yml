@@ -11,3 +11,14 @@
   loop: "{{ workstation_users }}"
   loop_control:
     label: "{{ item.name }}"
+
+# systemd_service with scope: user needs the account's own D-Bus/systemd user
+# instance, which is normally only started by an interactive login. Lingering starts
+# it immediately and keeps it running across reboots regardless of login state.
+- name: Activation du linger pour les comptes utilisateurs
+  ansible.builtin.command: "loginctl enable-linger {{ item.name }}"
+  args:
+    creates: "/var/lib/systemd/linger/{{ item.name }}"
+  loop: "{{ workstation_users }}"
+  loop_control:
+    label: "{{ item.name }}"

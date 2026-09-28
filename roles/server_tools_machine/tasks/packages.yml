@@ -16,3 +16,12 @@
     name: "{{ packages.redhat }}"
     state: present
   when: ansible_os_family == "RedHat"
+
+- name: Installation système de uv
+  ansible.builtin.shell:
+    cmd: "set -o pipefail && curl -LsSf {{ uv_install_script_url }} | sh"
+    executable: /bin/bash
+    creates: "{{ uv_install_dir }}/uv"
+  environment:
+    UV_INSTALL_DIR: "{{ uv_install_dir }}"
+    UV_NO_MODIFY_PATH: "1"

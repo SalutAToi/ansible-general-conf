@@ -1,26 +1,23 @@
 ---
-- name: Installing python tools via pipx
-  community.general.pipx:
-    name: "{{ item.name }}"
-    install_deps: "{{ item.install_deps }}"
-    state: latest
-  loop: "{{ pipx_tools }}"
-  when: pipx_tools | length > 0
+- name: Installation et mise à jour des outils Python via uv
+  ansible.builtin.command:
+    cmd: >-
+      uv tool install --upgrade
+      {{ item.with | default([]) | map('regex_replace', '^(.*)$', '--with \1') | join(' ') }}
+      {{ ('--with-executables-from ' ~ (item.with_executables_from | join(','))) if item.with_executables_from | default([]) | length > 0 else '' }}
+      {{ item.name }}
+  register: uv_tool_install
+  changed_when: "'Checked' not in uv_tool_install.stdout"
+  loop: "{{ uv_tools }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when: uv_tools | length > 0
 
-- name: Installing addtional requirements for pipx packages
-  community.general.pipx:
-    name: "{{ item.name }}"
-    state: inject
-    inject_packages: "{{ item.inject }}"
-  when:
-    - item.inject | default([]) | length > 0
-  loop: "{{ pipx_tools | default([]) }}"
-
-- name: Ensure path with pipx
-  ansible.builtin.command: pipx ensurepath
-  register: pipx_ensurepath
-  changed_when: "'has been been already added' not in pipx_ensurepath.stdout"
-  when: pipx_tools | length > 0
+- name: Mise à jour du PATH pour les outils uv
+  ansible.builtin.command: uv tool update-shell
+  register: uv_update_shell
+  changed_when: "'already in PATH' not in uv_update_shell.stdout"
+  when: uv_tools | length > 0
 
 # Reset before clone so a previous clone or dotfiles-tracked content cannot conflict.
 - name: Suppression des dossiers cibles avant clonage

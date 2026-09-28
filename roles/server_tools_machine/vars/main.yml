@@ -1,4 +1,10 @@
 ---
+# uv is not consistently packaged across supported distributions (missing on Ubuntu
+# LTS/Debian stable), so it is installed via the vendor's own installer script rather
+# than the distro package manager, matching AGENTS.md's third-party software rules.
+uv_install_script_url: https://astral.sh/uv/install.sh
+uv_install_dir: /usr/local/bin
+
 alternatives:
   - name: editor
     link: /usr/bin/editor
@@ -23,9 +29,9 @@ packages:
     - bat
     - diffutils
     - gnupg
-    - pipx
     - gcc
     - python3-dev
+    - libmagic1
   ubuntu:
     - neovim
     - git
@@ -37,9 +43,9 @@ packages:
     - bat
     - diffutils
     - gnupg
-    - pipx
     - gcc
     - python3-dev
+    - libmagic1
   redhat:
     - neovim
     - git
@@ -51,6 +57,6 @@ packages:
     - bat
     - diffutils
     - gnupg2
-    - pipx
     - gcc
     - python3-devel
+    - file-libs

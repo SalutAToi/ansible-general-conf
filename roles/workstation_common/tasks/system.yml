@@ -9,3 +9,4 @@
         - users.yml
         - system_config.yml
         - xdg_profile.yml
+        - keyd.yml

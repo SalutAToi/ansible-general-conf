@@ -1,6 +1,6 @@
 ---
 # Handlers don't inherit become from the notifying task's block, so it's set here.
-- name: Update apt
+- name: Recharger keyd
   become: true
-  ansible.builtin.apt:
-    update_cache: true
+  ansible.builtin.command: keyd reload
+  changed_when: true

@@ -1,9 +1,18 @@
 ---
+# become_user does not go through an interactive login, so XDG_RUNTIME_DIR is not
+# set in the task environment even though lingering already started the user's bus.
+- name: Récupération de l'identifiant de l'utilisateur courant
+  ansible.builtin.command: id -u
+  register: workstation_user_id
+  changed_when: false
+
 - name: Activation des services utilisateur
   ansible.builtin.systemd_service:
     name: "{{ item.name }}"
     state: "{{ 'started' if item.enabled else 'stopped' }}"
     enabled: "{{ item.enabled }}"
     scope: user
+  environment:
+    XDG_RUNTIME_DIR: "/run/user/{{ workstation_user_id.stdout }}"
   when: item.use
   loop: "{{ user_services }}"

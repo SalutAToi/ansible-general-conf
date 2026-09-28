@@ -25,6 +25,7 @@ deb_keys: []
 
 copr_projects:
   - zeno/scrcpy
+  - alternateved/keyd
 
 rpm_repos:
   # protonvpn
@@ -57,3 +58,14 @@ deb_repos:
     components: main
     architectures: "{{ package_arch }}"
     signed_by: https://repo.protonvpn.com/debian/public_key.asc
+  # keyd is not packaged for Ubuntu LTS releases, only for newer ones, so the
+  # project's own backport PPA is used instead (matches Pop!_OS, an Ubuntu LTS base)
+  - name: keyd-team-ppa
+    enabled: true
+    types: deb
+    uris:
+      - https://ppa.launchpadcontent.net/keyd-team/ppa/ubuntu
+    suites: "{{ ansible_distribution_release }}"
+    components: main
+    architectures: "{{ package_arch }}"
+    signed_by: "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x67D33FE29A58DA9441D20A9DCD9F79EC6A8AFB2F"

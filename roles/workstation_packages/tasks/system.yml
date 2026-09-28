@@ -1,4 +1,9 @@
 ---
+# Flushes handlers notified by roles that ran earlier in the play (e.g. sources
+# adding apt/dnf repos), so those repos are visible to the installs below.
+- name: Application des handlers en attente
+  ansible.builtin.meta: flush_handlers
+
 - name: Installation des paquets RedHat
   become: true
   when: ansible_os_family == "RedHat"
@@ -20,8 +25,10 @@
 - name: Installation des flatpaks et des polices
   become: true
   block:
-    - name: Inclusion des tâches flatpak et polices
+    - name: Inclusion des tâches flatpak, polices, install-release et qwerty-fr
       ansible.builtin.include_tasks: "{{ item }}"
       loop:
         - flatpak.yml
         - fonts.yml
+        - install_release.yml
+        - qwerty_fr.yml

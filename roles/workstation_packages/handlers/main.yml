@@ -1,9 +1,11 @@
 ---
+# Handlers don't inherit become from the notifying task's block, so it's set here.
 - name: Update apt
+  become: true
   ansible.builtin.apt:
     update_cache: true
-    cache_valid_time: 3600
 
 - name: Refresh font cache
+  become: true
   ansible.builtin.command: fc-cache -f
   changed_when: true

@@ -2,7 +2,7 @@
 galaxy_info:
   role_name: server_tools_user
   author: christophe
-  description: User-level server tooling - dotfiles checkout, git-based tools and pipx applications
+  description: User-level server tooling - dotfiles checkout, git-based tools and uv-installed Python applications
   license: MIT
   min_ansible_version: "2.15"
   platforms:

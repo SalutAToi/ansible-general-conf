@@ -1,58 +1,58 @@
 ---
 - name: Configuration système du poste
-  hosts: malatesta
+  hosts: popos
 
   vars_files:
     - vault.yml
 
   roles:
     - role: sources
-    - role: workstation_packages
-      workstation_packages_scope: system
+    # - role: workstation_packages
+    #   workstation_packages_scope: system
     - role: workstation_common
       workstation_common_scope: system
-    - role: work_profile_tools
-      work_profile_tools_scope: system
+    # - role: work_profile_tools
+    #   work_profile_tools_scope: system
     # - luks_fido2
     # - luks_tpm
     # - pam
 
-- name: Configuration du profil personnel
-  hosts: malatesta
-  become: true
-  become_user: christophe_perso
+# - name: Configuration du profil personnel
+#   hosts: popos
+#   become: true
+#   become_user: christophe_perso
 
-  vars_files:
-    - vault.yml
+#   vars_files:
+#     - vault.yml
 
-  vars:
-    user_environment: perso
+#   vars:
+#     user_environment: perso
 
-  roles:
-    - role: workstation_common
-      workstation_common_scope: user
-    - role: dotfiles
-    - role: workstation_packages
-      workstation_packages_scope: user
-    - role: work_profile_tools
-      work_profile_tools_scope: user
+#   roles:
+#     - role: workstation_common
+#       workstation_common_scope: user
+#     - role: dotfiles
+#     - role: workstation_packages
+#       workstation_packages_scope: user
+#     - role: work_profile_tools
+#       work_profile_tools_scope: user
 
-- name: Configuration du profil professionnel
-  hosts: malatesta
-  become: true
-  become_user: christophe_work
+# - name: Configuration du profil professionnel
+#   hosts: popos
+#   become: true
+#   become_user: christophe_work
 
-  vars_files:
-    - vault.yml
+#   vars_files:
+#     - vault.yml
 
-  vars:
-    user_environment: work
+#   vars:
+#     user_environment: work
 
-  roles:
-    - role: workstation_common
-      workstation_common_scope: user
-    - role: dotfiles
-    - role: workstation_packages
-      workstation_packages_scope: user
-    - role: work_profile_tools
-      work_profile_tools_scope: user
+#   roles:
+#     - role: workstation_common
+#       workstation_common_scope: user
+#     - role: dotfiles
+#     - role: workstation_packages
+#       workstation_packages_scope: user
+#     - role: work_profile_tools
+#       work_profile_tools_scope: user

@@ -111,6 +111,32 @@ dotfiles also track will conflict. Wherever this can happen, use this order:
 
 Use the shared task file for step 3 rather than repeating the `git --git-dir=...` command.
 
+### systemd units at `scope: user`
+
+`ansible.builtin.systemd_service` with `scope: user` needs the target account's own
+D-Bus/systemd user instance, which is normally only started by an interactive login —
+not by `become_user`. Every role managing a user-scoped unit must:
+
+1. Enable lingering for that account (`loginctl enable-linger <user>`, guarded by
+   `creates: /var/lib/systemd/linger/<user>`) so the instance starts and stays up
+   regardless of login state. Do this once, as root, in a system-scoped task.
+2. Pass `environment: {XDG_RUNTIME_DIR: "/run/user/<uid>"}` on the `scope: user` task
+   itself, since `become_user` does not export it. Resolve the uid locally with
+   `command: id -u` at the point the task runs rather than carrying a fact across
+   plays — facts do not persist between plays without a configured fact cache.
+
+See `roles/workstation_common/tasks/users.yml` and `tasks/services.yml` for the
+reference implementation.
+
+### Handlers requiring privilege escalation
+
+A handler does not inherit `become` from the task that notified it, nor from the
+`become: true` block wrapping that task — only from its own task definition, or from
+a play-level `become`. Since roles apply `become` at block level in `tasks/main.yml`
+rather than at the play level, any handler that needs root (`apt`/`dnf` cache updates,
+service restarts, cache refreshes) must set `become: true` on itself in
+`handlers/main.yml`.
+
 ## Idempotency
 
 - A second run must report no changes. Prefer modules over `command`/`shell`.

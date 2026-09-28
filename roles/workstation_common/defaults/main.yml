@@ -29,6 +29,14 @@ common_pub_ssh_keys:
 work_pub_ssh_keys:
   - id_rsa_work.pub
 
+# keyd rules, written verbatim to /etc/keyd/default.conf.
+keyd_config: |
+  [ids]
+  *
+
+  [main]
+  capslock = esc
+
 alternatives:
   - name: editor
     link: /usr/bin/editor

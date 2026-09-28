@@ -18,9 +18,9 @@ Fedora (GNOME) and Pop!_OS (COSMIC). Repository definitions are applied per
 | --- | --- | --- |
 | `deb_reqs` | see `vars/main.yml` | Packages required before adding apt repositories. |
 | `rpm_reqs` | see `vars/main.yml` | Packages required before adding dnf repositories. |
-| `deb_repos` | ProtonVPN | deb822 repository definitions, each with `signed_by`. |
+| `deb_repos` | ProtonVPN, keyd PPA | deb822 repository definitions, each with `signed_by`. |
 | `rpm_repos` | ProtonVPN, Speedtest CLI | yum repository definitions with `gpgkey`. |
-| `copr_repos` | scrcpy | COPR repositories to enable on Fedora. |
+| `copr_projects` | scrcpy, keyd | COPR repositories to enable on Fedora. |
 
 ## Dependencies
 
@@ -38,3 +38,5 @@ None declared in `meta/main.yml`.
   `apt-key add` are deprecated and are not used.
 - Repository URLs use the vendor's documented endpoint, with `$releasever` or
   `$basearch` where the vendor supports it.
+- `keyd` is not packaged for the Ubuntu LTS releases this repo targets, so its own
+  backport PPA (`keyd-team/ppa`) is used on Pop!_OS instead of the default archives.

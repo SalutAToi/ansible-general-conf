@@ -54,7 +54,7 @@ Groups only decide which hosts a play targets.
 | Role | Purpose |
 | --- | --- |
 | [server_tools_machine](roles/server_tools_machine/README.md) | Machine-level packages, alternatives, XDG, shell config |
-| [server_tools_user](roles/server_tools_user/README.md) | Git tools and pipx applications |
+| [server_tools_user](roles/server_tools_user/README.md) | Git tools and uv-installed Python applications |
 
 ## Usage
 

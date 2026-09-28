@@ -20,7 +20,6 @@ itself unless explicitly stated.
 - separate users for work and personal
 - add rclone and google drive mounting to work profile
 - add wl-clipboard
-- install install_release
 - create completion dir for zsh (see zshrc)
 - install dstask with completions
 - install pipx cater care tools with completions

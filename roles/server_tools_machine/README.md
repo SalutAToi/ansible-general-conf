@@ -20,6 +20,8 @@ distribution and selected from facts, with a family fallback.
 | `packages` | per distribution | Package lists keyed `debian`, `ubuntu` and `redhat`. |
 | `alternatives` | editor and vim to nvim | Alternatives registered system-wide. |
 | `xdg_vars` | see `defaults/main.yml` | XDG variables written to `/etc/profile.d`. |
+| `uv_install_script_url` | `https://astral.sh/uv/install.sh` | Vendor installer script used to install `uv` system-wide. |
+| `uv_install_dir` | `/usr/local/bin` | Shared install location for the `uv` binary, on every account's `PATH` by default. |
 
 ## Dependencies
 
@@ -41,3 +43,9 @@ None declared in `meta/main.yml`.
   differ, falling back to the Debian list when a distribution has no specific entry.
 - Setting the login shell is currently disabled, because it fails on GCP hosts using
   OS Login where the shell is managed externally.
+- `uv` is not consistently packaged across supported distributions, so it is installed
+  system-wide from the vendor's installer script instead of the distro package manager,
+  for use by `server_tools_user`'s per-user tool installs.
+- `libmagic` (`libmagic1` on Debian family, `file-libs` on RedHat family) is installed
+  as a runtime dependency of `install-release`, which `server_tools_user` installs per
+  user with `uv`.

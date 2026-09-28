@@ -1,0 +1,60 @@
+---
+- name: Résolution de la dernière version de qwerty-fr
+  ansible.builtin.uri:
+    url: "https://api.github.com/repos/{{ qwerty_fr_repo }}/releases/latest"
+    return_content: true
+  register: qwerty_fr_release
+  check_mode: false
+
+- name: Détermination de la version de qwerty-fr à installer
+  ansible.builtin.set_fact:
+    qwerty_fr_latest: "{{ qwerty_fr_release.json.tag_name }}"
+    qwerty_fr_asset_version: "{{ qwerty_fr_release.json.tag_name[1:] }}"
+
+# Ships a real .deb with its own xkb registration (postinst patches evdev.xml), so the
+# layout is immediately selectable from the Settings UI once installed. Installed with
+# install-release (--pkg) rather than apt directly, since it's already the standard
+# way this repo installs single-tool GitHub releases.
+- name: Installation de qwerty-fr sur Pop!_OS
+  when: ansible_distribution == "Pop!_OS"
+  block:
+    - name: Lecture de la version de qwerty-fr installée via dpkg
+      ansible.builtin.command: dpkg-query --showformat=${Version} --show xkb-qwerty-fr
+      register: qwerty_fr_dpkg_version
+      failed_when: false
+      changed_when: false
+
+    # `ir get` has no built-in skip-if-current-version check, unlike `ir upgrade`,
+    # so the version comparison above is what makes this task idempotent.
+    - name: Installation du paquet deb de qwerty-fr via install-release
+      ansible.builtin.command: "{{ install_release_install_dir }}/ir get https://github.com/{{ qwerty_fr_repo }} --pkg -y"
+      when: qwerty_fr_dpkg_version.stdout != qwerty_fr_asset_version
+      changed_when: true
+
+# No Fedora package exists upstream. The vendor's own "other distros" instructions are
+# to extract the zip at the filesystem root; unlike the deb it does not register the
+# variant in evdev.xml, so it will not appear in GNOME Settings without a manual step
+# (see the role README).
+- name: Installation de qwerty-fr sur Fedora
+  when: ansible_distribution == "Fedora"
+  block:
+    - name: Lecture de la version de qwerty-fr déjà installée
+      ansible.builtin.slurp:
+        src: /usr/share/doc/xkb-qwerty-fr/.qwerty-fr-version
+      register: qwerty_fr_installed
+      failed_when: false
+      changed_when: false
+
+    - name: Extraction de qwerty-fr à la racine du système
+      ansible.builtin.unarchive:
+        src: "https://github.com/{{ qwerty_fr_repo }}/releases/download/{{ qwerty_fr_latest }}/qwerty-fr_{{ qwerty_fr_asset_version }}_linux.zip"
+        dest: /
+        remote_src: true
+      when: (qwerty_fr_installed.content | default('') | b64decode | trim) != qwerty_fr_latest
+
+    - name: Enregistrement de la version de qwerty-fr installée
+      ansible.builtin.copy:
+        content: "{{ qwerty_fr_latest }}\n"
+        dest: /usr/share/doc/xkb-qwerty-fr/.qwerty-fr-version
+        mode: "0644"
+      when: (qwerty_fr_installed.content | default('') | b64decode | trim) != qwerty_fr_latest

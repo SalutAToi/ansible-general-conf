@@ -1,8 +1,8 @@
 # workstation_common
 
 Common workstation configuration: creates the two user profiles, sets editor
-alternatives, applies system configuration, exposes the XDG variables and deploys SSH
-public keys.
+alternatives, applies system configuration, exposes the XDG variables, deploys SSH
+public keys and configures the `keyd` remapping daemon.
 
 ## Supported distributions
 
@@ -14,6 +14,8 @@ Fedora (GNOME) and Pop!_OS (COSMIC). Distribution differences are resolved from
 - Collection `community.general` (for `alternatives`)
 - `zsh` installed before the role runs, because it is set as the login shell.
   `workstation_packages` installs it, so run that role first.
+- The `keyd` package installed and its repository added, which `sources` and
+  `workstation_packages` provide; run both roles first.
 
 ## Role variables
 
@@ -29,6 +31,7 @@ Fedora (GNOME) and Pop!_OS (COSMIC). Distribution differences are resolved from
 | `alternatives` | editor and vim to nvim | Alternatives registered system-wide. |
 | `user_services` | ssh-agent, gnome-keyring-daemon | User scope systemd services to enable. |
 | `xdg_vars` | see `defaults/main.yml` | XDG variables written to `/etc/profile.d` and the directories created per user. |
+| `keyd_config` | capslock → escape | Rules written verbatim to `/etc/keyd/default.conf`. |
 
 Internal variables live in `vars/main.yml`.
 
@@ -40,7 +43,8 @@ None declared in `meta/main.yml`.
 
 The role is split so it can run once as root and once per profile:
 
-- `system` — alternatives, account creation, hostname and ZDOTDIR, XDG profile file.
+- `system` — alternatives, account creation, hostname and ZDOTDIR, XDG profile file,
+  `keyd` configuration and service.
 - `user` — XDG directories, user services, SSH public keys.
 
 ## Example usage
@@ -69,3 +73,11 @@ The role is split so it can run once as root and once per profile:
   Set them by hand on first provisioning.
 - Only public keys are shipped. `id_ed25519.pub` must be added to `files/` before the
   role can deploy it.
+- `services.yml` manages systemd units at `scope: user`, which needs a running D-Bus/
+  systemd user instance for the account. `users.yml` enables lingering for every entry
+  in `workstation_users` right after creating the account, so that instance exists
+  without requiring an interactive login; `services.yml` then points the task at that
+  instance's runtime directory. See AGENTS.md, "systemd units at `scope: user`".
+- `keyd` is a system-wide daemon (not per-user), so its remap rules apply to every
+  account on the machine. Config changes are applied with `keyd reload` rather than a
+  full service restart, per the tool's own recommendation.

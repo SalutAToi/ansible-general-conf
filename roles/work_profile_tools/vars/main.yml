@@ -1,4 +1,10 @@
 ---
+# uv is not consistently packaged across supported distributions (missing on Ubuntu
+# LTS/Debian stable), so it is installed via the vendor's own installer script rather
+# than the distro package manager, matching AGENTS.md's third-party software rules.
+uv_install_script_url: https://astral.sh/uv/install.sh
+uv_install_dir: /usr/local/bin
+
 deb_reqs:
   - packagekit
   - apt-transport-https
@@ -9,7 +15,6 @@ deb_reqs:
   - ca-certificates
   - lsb-release
   - debian-archive-keyring
-  - pipx
 rpm_reqs:
   - PackageKit
   - libxcrypt-compat.x86_64
@@ -20,7 +25,6 @@ rpm_reqs:
   - git
   - wget
   - lsb-release
-  - pipx
 
 deb_keys: []
 
@@ -176,13 +180,14 @@ packages:
 
 git_tools:
   - repo: https://github.com/LazyVim/starter
-    dest: "{{ lookup('env', 'XDG_CONFIG_HOME', default=ansible_env.HOME + '/.config') }}/nvim"
+    dest: "{{ ansible_env.XDG_CONFIG_HOME | default(ansible_env.HOME + '/.config') }}/nvim"
     delete_git_folder: true
 
-pipx_tools:
+uv_tools:
   - name: ansible
-    install_deps: true
-    inject:
+    with_executables_from:
+      - ansible-core
+    with:
       - pywinrm
       - dnspython
       - passlib
